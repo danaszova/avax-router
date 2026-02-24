@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avalanche DEX Router - Simple Swap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        body { background: #0a0a0a; color: white; font-family: system-ui, -apple-system, sans-serif; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .gradient-text { background: linear-gradient(135deg, #e84142 0%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold gradient-text mb-2">Avalanche DEX Router</h1>
+            <p class="text-gray-400 text-sm">Best rates via TraderJoe & Pangolin</p>
+            <div class="mt-2 text-xs text-green-400">0.05% Fee • Live on Mainnet</div>
+        </div>
+
+        <!-- Wallet Connection -->
+        <div class="glass rounded-2xl p-6 mb-4">
+            <div id="walletSection">
+                <button onclick="connectWallet()" class="w-full bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white font-semibold py-3 px-6 rounded-xl transition-all transform hover:scale-[1.02]">
+                    Connect Wallet
+                </button>
+            </div>
+            <div id="walletInfo" class="hidden">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400 text-sm">Connected</span>
+                    <span id="walletAddress" class="text-green-400 font-mono text-sm"></span>
+                </div>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-gray-400 text-sm">AVAX Balance</span>
+                    <span id="avaxBalance" class="font-semibold">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Swap Form -->
+        <div class="glass rounded-2xl p-6">
+            <!-- From Token -->
+            <div class="mb-4">
+                <label class="block text-gray-400 text-sm mb-2">From</label>
+                <div class="flex gap-2">
+                    <select id="fromToken" class="bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500">
+                        <option value="AVAX">AVAX</option>
+                        <option value="USDC">USDC</option>
+                        <option value="USDT">USDT</option>
+                        <option value="WBTC">WBTC</option>
+                        <option value="WETH">WETH</option>
+                    </select>
+                    <input type="number" id="fromAmount" placeholder="0.0" step="0.001" 
+                        class="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500">
+                </div>
+            </div>
+
+            <!-- Swap Arrow -->
+            <div class="flex justify-center my-2">
+                <button onclick="switchTokens()" class="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition">
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- To Token -->
+            <div class="mb-6">
+                <label class="block text-gray-400 text-sm mb-2">To</label>
+                <div class="flex gap-2">
+                    <select id="toToken" class="bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-red-500">
+                        <option value="USDC" selected>USDC</option>
+                        <option value="AVAX">AVAX</option>
+                        <option value="USDT">USDT</option>
+                        <option value="WBTC">WBTC</option>
+                        <option value="WETH">WETH</option>
+                    </select>
+                    <input type="text" id="toAmount" placeholder="0.0" readonly 
+                        class="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-gray-400">
+                </div>
+            </div>
+
+            <!-- Quote Info -->
+            <div id="quoteInfo" class="hidden mb-4 p-4 bg-gray-800/50 rounded-xl">
+                <div class="flex justify-between text-sm mb-1">
+                    <span class="text-gray-400">Rate</span>
+                    <span id="rateInfo" class="text-white">--</span>
+                </div>
+                <div class="flex justify-between text-sm mb-1">
+                    <span class="text-gray-400">Best Route</span>
+                    <span id="routeInfo" class="text-green-400">--</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-400">Est. Gas</span>
+                    <span id="gasInfo" class="text-white">--</span>
+                </div>
+            </div>
+
+            <!-- Get Quote Button -->
+            <button onclick="getQuote()" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-xl mb-3 transition">
+                Get Quote
+            </button>
+
+            <!-- Swap Button -->
+            <button onclick="executeSwap()" id="swapBtn" disabled 
+                class="w-full bg-gradient-to-r from-red-600 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl opacity-50 cursor-not-allowed transition">
+                Swap
+            </button>
+        </div>
+
+        <!-- Contract Info -->
+        <div class="mt-6 text-center">
+            <p class="text-xs text-gray-500 mb-2">DexRouter Contract</p>
+            <code class="text-xs text-gray-400 bg-gray-900 px-3 py-1 rounded">0x3ff7...e3B5</code>
+        </div>
+    </div>
+
+    <script>
+        // Token addresses (must match API lowercase addresses)
+        const TOKENS = {
+            'AVAX': '0xb31f66aa3c1ee3b4dd11e3a23d8e14d7254c2d6c',
+            'USDC': '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e',
+            'USDT': '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7',
+            'WBTC': '0x50b7545627a5162f82a992c33b87adc75187b218',
+            'WETH': '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab'
+        };
+
+        // Contract addresses
+        const DEX_ROUTER_ADDRESS = '0x3ff7FAAD7417130C60b7422De712eAd9a7C2e3B5';
+
+        // DexRouter ABI (minimal for swap functions)
+        const DEX_ROUTER_ABI = [
+            "function swapBestRoute(address tokenIn, address tokenOut, uint256 amountIn, uint256 minAmountOut, address recipient) external payable returns (uint256 amountOut)",
+            "function swapOnDex(string calldata dexName, address tokenIn, address tokenOut, uint256 amountIn, uint256 minAmountOut, address recipient) external payable returns (uint256 amountOut)",
+            "function getQuote(string memory dexName, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256 amountOut)",
+            "function findBestRoute(address tokenIn, address tokenOut, uint256 amountIn) external view returns (string memory bestDex, uint256 bestAmountOut)",
+            "function getRegisteredDexes() external view returns (string[] memory)",
+            "event SwapExecuted(address indexed user, address indexed tokenIn, address indexed tokenOut, uint256 amountIn, uint256 amountOut, string dexUsed, uint256 feeCollected)"
+        ];
+
+        // ERC20 ABI for approvals
+        const ERC20_ABI = [
+            "function approve(address spender, uint256 amount) external returns (bool)",
+            "function allowance(address owner, address spender) external view returns (uint256)",
+            "function balanceOf(address account) external view returns (uint256)",
+            "function decimals() external view returns (uint8)"
+        ];
+
+        let provider, signer, walletAddress;
+        let currentQuote = null;
+        let dexRouterContract = null;
+
+        async function connectWallet() {
+            if (!window.ethereum) {
+                alert('Please install MetaMask!');
+                return;
+            }
+
+            try {
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send('eth_requestAccounts', []);
+                signer = provider.getSigner();
+                walletAddress = await signer.getAddress();
+                
+                document.getElementById('walletSection').classList.add('hidden');
+                document.getElementById('walletInfo').classList.remove('hidden');
+                document.getElementById('walletAddress').textContent = 
+                    walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
+
+                // Get balance
+                const balance = await provider.getBalance(walletAddress);
+                document.getElementById('avaxBalance').textContent = 
+                    parseFloat(ethers.utils.formatEther(balance)).toFixed(4) + ' AVAX';
+
+            } catch (err) {
+                console.error('Wallet connection failed:', err);
+                alert('Failed to connect wallet');
+            }
+        }
+
+        function switchTokens() {
+            const from = document.getElementById('fromToken');
+            const to = document.getElementById('toToken');
+            const temp = from.value;
+            from.value = to.value;
+            to.value = temp;
+        }
+
+        async function getQuote() {
+            const fromToken = document.getElementById('fromToken').value;
+            const toToken = document.getElementById('toToken').value;
+            const amount = document.getElementById('fromAmount').value;
+
+            if (!amount || parseFloat(amount) <= 0) {
+                alert('Please enter an amount');
+                return;
+            }
+
+            try {
+                // Convert amount to wei
+                const decimals = fromToken === 'AVAX' ? 18 : 6;
+                const amountIn = ethers.utils.parseUnits(amount, decimals).toString();
+
+                const response = await fetch(
+                    `http://localhost:3000/api/v1/quote/best?tokenIn=${TOKENS[fromToken]}&tokenOut=${TOKENS[toToken]}&amountIn=${amountIn}&_=${Date.now()}`
+                );
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                if (data.error) {
+                    alert('Quote failed: ' + data.message);
+                    return;
+                }
+
+                currentQuote = data;
+                
+                // Display results
+                const outDecimals = toToken === 'AVAX' ? 18 : 6;
+                console.log('Output decimals:', outDecimals);
+                console.log('Raw amountOut:', data.amountOut);
+                console.log('Parsed amountOut:', parseFloat(data.amountOut));
+                console.log('Divided by 10^decimals:', parseFloat(data.amountOut) / (10 ** outDecimals));
+                
+                const amountOutNum = parseFloat(data.amountOut) / (10 ** outDecimals);
+                document.getElementById('toAmount').value = amountOutNum.toFixed(6);
+                
+                document.getElementById('quoteInfo').classList.remove('hidden');
+                const rate = amountOutNum / parseFloat(amount);
+                document.getElementById('rateInfo').textContent = `1 ${fromToken} ≈ ${rate.toFixed(6)} ${toToken}`;
+                document.getElementById('routeInfo').textContent = data.dex;
+                document.getElementById('gasInfo').textContent = data.estimatedGas;
+
+                // Enable swap button
+                const swapBtn = document.getElementById('swapBtn');
+                swapBtn.disabled = false;
+                swapBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            } catch (err) {
+                console.error('Quote error:', err);
+                alert('Failed to get quote. Is the API running?');
+            }
+        }
+
+        async function executeSwap() {
+            if (!signer) {
+                alert('Please connect wallet first');
+                return;
+            }
+
+            if (!currentQuote) {
+                alert('Please get a quote first');
+                return;
+            }
+
+            const fromToken = document.getElementById('fromToken').value;
+            const toToken = document.getElementById('toToken').value;
+            const amount = document.getElementById('fromAmount').value;
+
+            try {
+                // Initialize contract
+                dexRouterContract = new ethers.Contract(DEX_ROUTER_ADDRESS, DEX_ROUTER_ABI, signer);
+
+                // Convert amount to wei
+                const decimals = fromToken === 'AVAX' ? 18 : 6;
+                const amountIn = ethers.utils.parseUnits(amount, decimals);
+
+                // Calculate minAmountOut (0.5% slippage tolerance)
+                const amountOutMin = ethers.BigNumber.from(currentQuote.amountOut)
+                    .mul(995)
+                    .div(1000);
+
+                // If not AVAX, need to approve token first
+                if (fromToken !== 'AVAX') {
+                    const tokenContract = new ethers.Contract(TOKENS[fromToken], ERC20_ABI, signer);
+                    
+                    // Check current allowance
+                    const allowance = await tokenContract.allowance(walletAddress, DEX_ROUTER_ADDRESS);
+                    
+                    if (allowance.lt(amountIn)) {
+                        console.log('Approving token...');
+                        document.getElementById('swapBtn').textContent = 'Approving...';
+                        
+                        const approveTx = await tokenContract.approve(DEX_ROUTER_ADDRESS, ethers.constants.MaxUint256);
+                        await approveTx.wait();
+                        
+                        console.log('Approval confirmed');
+                    }
+                }
+
+                // Execute swap
+                console.log('Executing swap...');
+                document.getElementById('swapBtn').textContent = 'Swapping...';
+                document.getElementById('swapBtn').disabled = true;
+
+                let swapTx;
+                const txOptions = fromToken === 'AVAX' ? { value: amountIn } : {};
+
+                // Use specific DEX from quote for better control, or use swapBestRoute
+                if (currentQuote.dex === 'TraderJoeV2' || currentQuote.dex === 'Pangolin') {
+                    swapTx = await dexRouterContract.swapOnDex(
+                        currentQuote.dex,
+                        TOKENS[fromToken],
+                        TOKENS[toToken],
+                        amountIn,
+                        amountOutMin,
+                        walletAddress,
+                        txOptions
+                    );
+                } else {
+                    swapTx = await dexRouterContract.swapBestRoute(
+                        TOKENS[fromToken],
+                        TOKENS[toToken],
+                        amountIn,
+                        amountOutMin,
+                        walletAddress,
+                        txOptions
+                    );
+                }
+
+                console.log('Transaction sent:', swapTx.hash);
+                document.getElementById('swapBtn').textContent = 'Confirming...';
+
+                const receipt = await swapTx.wait();
+                console.log('Transaction confirmed:', receipt);
+
+                // Find SwapExecuted event
+                const swapEvent = receipt.events?.find(e => e.event === 'SwapExecuted');
+                if (swapEvent) {
+                    const { amountOut, dexUsed, feeCollected } = swapEvent.args;
+                    const outDecimals = toToken === 'AVAX' ? 18 : 6;
+                    const outAmount = parseFloat(ethers.utils.formatUnits(amountOut, outDecimals));
+                    
+                    alert(`✅ Swap Successful!\n\n` +
+                          `Route: ${dexUsed}\n` +
+                          `Received: ${outAmount.toFixed(6)} ${toToken}\n` +
+                          `Fee: ${ethers.utils.formatUnits(feeCollected, fromToken === 'AVAX' ? 18 : 6)} ${fromToken}\n` +
+                          `Tx: ${swapTx.hash.slice(0, 20)}...`);
+                } else {
+                    alert(`✅ Swap Successful!\nTx: ${swapTx.hash}`);
+                }
+
+                // Reset UI
+                document.getElementById('swapBtn').textContent = 'Swap';
+                document.getElementById('swapBtn').disabled = false;
+                
+                // Refresh balance
+                const balance = await provider.getBalance(walletAddress);
+                document.getElementById('avaxBalance').textContent = 
+                    parseFloat(ethers.utils.formatEther(balance)).toFixed(4) + ' AVAX';
+
+            } catch (err) {
+                console.error('Swap failed:', err);
+                document.getElementById('swapBtn').textContent = 'Swap';
+                document.getElementById('swapBtn').disabled = false;
+                
+                let errorMsg = err.message;
+                if (err.code === 'ACTION_REJECTED') {
+                    errorMsg = 'Transaction rejected by user';
+                } else if (err.reason) {
+                    errorMsg = err.reason;
+                }
+                
+                alert('❌ Swap Failed: ' + errorMsg);
+            }
+        }
+
+        // Auto-get quote when amount changes
+        document.getElementById('fromAmount').addEventListener('input', 
+            debounce(getQuote, 500)
+        );
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+    </script>
+</body>
+</html>

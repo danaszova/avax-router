@@ -1,0 +1,18 @@
+{
+  "name": "avalanche-dex-router",
+  "version": "1.0.0",
+  "description": "Avalanche DEX Aggregator - Routes trades across Trader Joe, Pangolin",
+  "private": true,
+  "workspaces": [
+    "packages/contracts",
+    "packages/api",
+    "packages/widget",
+    "packages/demo-app"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "test": "yarn workspaces run test",
+    "lint": "yarn workspaces run lint"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avalanche DEX Router - UAT Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #0f0f0f;
+            color: white;
+            font-family: system-ui, sans-serif;
+        }
+
+        .widget-container {
+            background: #1a1a1a;
+            border-radius: 16px;
+            border: 1px solid #2d2d2d;
+        }
+    </style>
+    <script type="module" src="/src/main.tsx"></script>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center p-8 text-white">
+    <div class="max-w-4xl w-full">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1
+                class="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
+                Avalanche DEX Router
+            </h1>
+            <p class="text-gray-400">UAT Testing Environment • 0.05% Fees • Best Rates</p>
+            <div class="mt-4 flex gap-4 justify-center text-sm">
+                <span class="px-3 py-1 bg-green-900/30 text-green-400 rounded-full border border-green-800">Mainnet
+                    Ready</span>
+                <span class="px-3 py-1 bg-blue-900/30 text-blue-400 rounded-full border border-blue-800"
+                    id="apiStatusBadge">API Testing</span>
+            </div>
+        </div>
+
+        <!-- Widget Container -->
+        <div class="widget-container p-6 mb-8 flex flex-col items-center">
+            <h2 class="text-xl font-semibold mb-4 text-gray-200 self-start">Swap Widget</h2>
+            <div id="root" class="w-full flex justify-center py-10">
+                <!-- Fallback/Mounting Point -->
+                <div
+                    class="text-center p-8 bg-gray-900/50 rounded-xl border border-dashed border-gray-700 w-full max-w-sm">
+                    <div class="text-3xl mb-2">⚡</div>
+                    <p class="text-sm text-gray-400">React Widget Mounting Point</p>
+                    <p class="text-xs text-gray-600 mt-2">Check console for quote fetching logs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Scenarios -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="widget-container p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-200">Quick Test Scenarios</h3>
+                <div class="space-y-2">
+                    <button onclick="testQuote('AVAX', 'USDC', '0.1')"
+                        class="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm flex justify-between items-center group">
+                        <span>1. 0.1 AVAX → USDC</span>
+                        <span class="text-gray-500 group-hover:text-blue-400 text-xs">Run Test →</span>
+                    </button>
+                    <button onclick="testQuote('USDC', 'AVAX', '10')"
+                        class="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm flex justify-between items-center group">
+                        <span>2. 10 USDC → AVAX</span>
+                        <span class="text-gray-500 group-hover:text-blue-400 text-xs">Run Test →</span>
+                    </button>
+                    <button onclick="testQuote('WBTC', 'USDT', '0.01')"
+                        class="w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm flex justify-between items-center group">
+                        <span>3. 0.01 WBTC → USDT</span>
+                        <span class="text-gray-500 group-hover:text-blue-400 text-xs">Run Test →</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="widget-container p-6">
+                <h3 class="text-lg font-semibold mb-4 text-gray-200">Debug Results</h3>
+                <div class="space-y-2 text-sm text-gray-400">
+                    <p>API URL: <code class="text-blue-400">http://localhost:3000/api/v1</code></p>
+                    <p>WAVAX Address: <code
+                            class="text-green-400 text-xs">0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7</code></p>
+                </div>
+                <div id="testResults"
+                    class="mt-4 p-3 bg-black rounded text-xs font-mono h-40 overflow-auto border border-gray-800">
+                    <span class="text-gray-600">Click test scenarios above to verify API responses...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-xs text-gray-600">
+            DEX Router v1.0.0 • Avalanche Mainnet
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api/v1';
+
+        // Check API health
+        fetch(`${API_BASE}/health`)
+            .then(r => r.json())
+            .then(() => {
+                document.getElementById('apiStatusBadge').textContent = 'API Connected ✅';
+                document.getElementById('apiStatusBadge').className = 'px-3 py-1 bg-green-900/30 text-green-400 rounded-full border border-green-800';
+            })
+            .catch(() => {
+                document.getElementById('apiStatusBadge').textContent = 'API Offline ❌';
+                document.getElementById('apiStatusBadge').className = 'px-3 py-1 bg-red-900/30 text-red-400 rounded-full border border-red-800';
+            });
+
+        async function testQuote(from, to, amount) {
+            const results = document.getElementById('testResults');
+            results.innerHTML = `<span class="text-blue-400">Testing: ${amount} ${from} → ${to}...</span>\n`;
+
+            const tokens = {
+                'AVAX': '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+                'USDC': '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
+                'USDT': '0x9702230A8Ea53601f5CD2dc00fDBc13d4dF4A8c7',
+                'WBTC': '0x50b7545627a5162F82A992c33b87aDc75187B218',
+                'WETH': '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',
+                'DAI': '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70'
+            };
+
+            try {
+                // Testing with decimal amount as recommended by the new API logic
+                const url = `${API_BASE}/quote/best?tokenIn=${tokens[from]}&tokenOut=${tokens[to]}&amountIn=${amount}`;
+
+                results.innerHTML += `<span class="text-gray-500">GET ${url}</span>\n`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.error) {
+                    results.innerHTML += `\n<span class="text-red-500">❌ API Error: ${data.message || data.error}</span>`;
+                } else {
+                    results.innerHTML += `\n<span class="text-green-400">✅ Best Route: ${data.bestDex}</span>`;
+                    results.innerHTML += `\n<span class="text-gray-300">💰 Amount Out: ${data.amountOutFormatted.toFixed(6)} ${to}</span>`;
+                    results.innerHTML += `\n<span class="text-gray-300">📊 Price Impact: ${data.priceImpact.toFixed(2)}%</span>`;
+                    results.innerHTML += `\n<span class="text-gray-300">⛽ Est. Gas: ${data.estimatedGas}</span>`;
+                    results.innerHTML += `\n<span class="text-gray-300">💵 Savings: $${data.savings.toFixed(2)}</span>`;
+                }
+            } catch (err) {
+                results.innerHTML += `\n<span class="text-red-500">❌ Network Error: ${err.message}</span>`;
+            }
+        }
+    </script>
+</body>
+
+</html>
