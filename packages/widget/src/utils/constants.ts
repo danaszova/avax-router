@@ -10,15 +10,6 @@ export const AVALANCHE_TOKENS: Token[] = [
     logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png',
   },
   {
-    // IMPORTANT: This is the WORKING WAVAX address on TraderJoe V1
-    address: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-    symbol: 'WAVAX',
-    name: 'Wrapped AVAX',
-    decimals: 18,
-    chainId: 43114,
-    logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png',
-  },
-  {
     address: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
     symbol: 'USDC',
     name: 'USD Coin',
@@ -57,6 +48,46 @@ export const AVALANCHE_TOKENS: Token[] = [
     decimals: 18,
     chainId: 43114,
     logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB/logo.png',
+  },
+  {
+    address: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd',
+    symbol: 'JOE',
+    name: 'JOE',
+    decimals: 18,
+    chainId: 43114,
+    logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd/logo.png',
+  },
+  {
+    address: '0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5',
+    symbol: 'QI',
+    name: 'BENQI',
+    decimals: 18,
+    chainId: 43114,
+    logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5/logo.png',
+  },
+  {
+    address: '0x5947bb275c521040051d82396192181b413227a3',
+    symbol: 'LINK',
+    name: 'Chainlink',
+    decimals: 18,
+    chainId: 43114,
+    logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0x5947bb275c521040051d82396192181b413227a3/logo.png',
+  },
+  {
+    address: '0x62edc0692BD897D2295872a9FFCac5425011c661',
+    symbol: 'GMX',
+    name: 'GMX',
+    decimals: 18,
+    chainId: 43114,
+    logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0x62edc0692BD897D2295872a9FFCac5425011c661/logo.png',
+  },
+  {
+    address: '0x60781C2586D68229fde47564546784ab3fACA982',
+    symbol: 'PNG',
+    name: 'Pangolin',
+    decimals: 18,
+    chainId: 43114,
+    logoURI: 'https://raw.githubusercontent.com/pangolindex/tokenlists/master/logos/0x60781C2586D68229fde47564546784ab3fACA982/logo.png',
   },
 ];
 

@@ -88,6 +88,8 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
   const [customSlippage, setCustomSlippage] = useState<number>(slippage);
+  const [isTokenSelectorOpen, setIsTokenSelectorOpen] = useState<'in' | 'out' | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [txHash, setTxHash] = useState<string | null>(null);
 
   const { isConnected, address } = useAccount();
@@ -120,11 +122,17 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
 
   useEffect(() => {
     if (defaultTokenIn) {
-      const token = tokens.find(t => t.address.toLowerCase() === defaultTokenIn.toLowerCase());
+      const token = tokens.find(t =>
+        t.address.toLowerCase() === defaultTokenIn.toLowerCase() ||
+        t.symbol.toLowerCase() === defaultTokenIn.toLowerCase()
+      );
       if (token) setTokenIn(token);
     }
     if (defaultTokenOut) {
-      const token = tokens.find(t => t.address.toLowerCase() === defaultTokenOut.toLowerCase());
+      const token = tokens.find(t =>
+        t.address.toLowerCase() === defaultTokenOut.toLowerCase() ||
+        t.symbol.toLowerCase() === defaultTokenOut.toLowerCase()
+      );
       if (token) setTokenOut(token);
     }
   }, [defaultTokenIn, defaultTokenOut, tokens]);
@@ -408,32 +416,23 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
 
           <div className="flex items-center justify-between gap-4">
             <div className="flex-shrink-0">
-              <div className="relative">
-                <select
-                  value={tokenIn?.address || ''}
-                  onChange={(e) => {
-                    const token = tokens.find(t => t.address === e.target.value);
-                    setTokenIn(token || null);
-                  }}
-                  className="appearance-none pl-4 pr-10 py-3 rounded-2xl text-lg font-black outline-none cursor-pointer border-none transition-all duration-200"
-                  style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                    color: theme === 'dark' ? '#FFFFFF' : '#1A1A1A',
-                  }}
-                >
-                  <option value="">Token</option>
-                  {tokens.map((token) => (
-                    <option key={token.address} value={token.address}>
-                      {token.symbol}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </div>
-              </div>
+              <button
+                onClick={() => setIsTokenSelectorOpen('in')}
+                className="flex items-center gap-2 px-3 py-2 rounded-2xl transition-all duration-200 hover:bg-white/10"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                }}
+              >
+                {tokenIn?.logoURI ? (
+                  <img src={tokenIn.logoURI} alt={tokenIn.symbol} className="w-6 h-6 rounded-full" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center text-[10px] font-bold">?</div>
+                )}
+                <span className="text-lg font-black">{tokenIn?.symbol || 'Select'}</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
             </div>
 
             <div className="flex-1 min-w-0">
@@ -499,32 +498,23 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
 
           <div className="flex items-center justify-between gap-4">
             <div className="flex-shrink-0">
-              <div className="relative">
-                <select
-                  value={tokenOut?.address || ''}
-                  onChange={(e) => {
-                    const token = tokens.find(t => t.address === e.target.value);
-                    setTokenOut(token || null);
-                  }}
-                  className="appearance-none pl-4 pr-10 py-3 rounded-2xl text-lg font-black outline-none cursor-pointer border-none transition-all duration-200"
-                  style={{
-                    backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
-                    color: theme === 'dark' ? '#FFFFFF' : '#1A1A1A',
-                  }}
-                >
-                  <option value="">Token</option>
-                  {tokens.map((token) => (
-                    <option key={token.address} value={token.address}>
-                      {token.symbol}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </div>
-              </div>
+              <button
+                onClick={() => setIsTokenSelectorOpen('out')}
+                className="flex items-center gap-2 px-3 py-2 rounded-2xl transition-all duration-200 hover:bg-white/10"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                }}
+              >
+                {tokenOut?.logoURI ? (
+                  <img src={tokenOut.logoURI} alt={tokenOut.symbol} className="w-6 h-6 rounded-full" />
+                ) : (
+                  <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center text-[10px] font-bold">?</div>
+                )}
+                <span className="text-lg font-black">{tokenOut?.symbol || 'Select'}</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
             </div>
 
             <div className="flex-1 min-w-0 text-right h-10 flex items-center justify-end">
@@ -666,11 +656,36 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
               </div>
             </div>
           ) : !isConnected ? (
-            <div className="[&>button]:!w-full [&>button]:!py-4 [&>button]:!rounded-3xl [&>button]:!font-black [&>button]:!text-lg [&>button]:!transition-all [&>button]:!border-none" style={{
-              filter: 'drop-shadow(0 10px 20px rgba(232, 65, 66, 0.2))'
-            }}>
-              <ConnectButton />
-            </div>
+            <ConnectButton.Custom>
+              {({ account, chain, openConnectModal, mounted }) => {
+                return (
+                  <div
+                    {...(!mounted && {
+                      'aria-hidden': true,
+                      'style': { opacity: 0, pointerEvents: 'none', userSelect: 'none' },
+                    })}
+                  >
+                    {(() => {
+                      if (!mounted || !account || !chain) {
+                        return (
+                          <button
+                            onClick={openConnectModal}
+                            style={{
+                              backgroundColor: primaryColor,
+                              boxShadow: `0 10px 30px ${primaryColor}44`,
+                            }}
+                            className="w-full py-4 rounded-3xl font-black text-lg text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+                          >
+                            CONNECT WALLET
+                          </button>
+                        );
+                      }
+                      return null;
+                    })()}
+                  </div>
+                );
+              }}
+            </ConnectButton.Custom>
           ) : (
             <button
               onClick={handleSwap}
@@ -699,6 +714,70 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
         </div>
       </div>
 
+      {/* Token Selection Modal */}
+      {isTokenSelectorOpen && (
+        <div className="absolute inset-0 z-50 p-4 animate-in fade-in duration-200">
+          <div
+            className="w-full h-full rounded-3xl flex flex-col overflow-hidden"
+            style={{
+              backgroundColor: theme === 'dark' ? '#121213' : '#F9F9F9',
+              border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+            }}
+          >
+            <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}>
+              <h3 className="text-sm font-black uppercase tracking-widest opacity-60">Select Token</h3>
+              <button onClick={() => { setIsTokenSelectorOpen(null); setSearchQuery(''); }} className="opacity-40 hover:opacity-100 transition-opacity">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+              </button>
+            </div>
+            <div className="p-4">
+              <input
+                autoFocus
+                type="text"
+                placeholder="Search name or symbol..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm font-bold outline-none focus:border-red-500/50 transition-colors"
+                style={{ backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' }}
+              />
+            </div>
+            <div className="flex-1 overflow-y-auto p-2">
+              {tokens
+                .filter(t => t.symbol.toLowerCase().includes(searchQuery.toLowerCase()) || t.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                .map((token) => (
+                  <button
+                    key={token.address}
+                    onClick={() => {
+                      if (isTokenSelectorOpen === 'in') setTokenIn(token);
+                      else setTokenOut(token);
+                      setIsTokenSelectorOpen(null);
+                      setSearchQuery('');
+                    }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-white/5 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3">
+                      {token.logoURI ? (
+                        <img src={token.logoURI} alt={token.symbol} className="w-8 h-8 rounded-full" />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold">?</div>
+                      )}
+                      <div className="text-left">
+                        <p className="text-sm font-black">{token.symbol}</p>
+                        <p className="text-[10px] font-bold opacity-40">{token.name}</p>
+                      </div>
+                    </div>
+                    {(isTokenSelectorOpen === 'in' ? tokenIn : tokenOut)?.address === token.address && (
+                      <div style={{ color: primaryColor }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12" /></svg>
+                      </div>
+                    )}
+                  </button>
+                ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       <style dangerouslySetInnerHTML={{
         __html: `
         .slant {
@@ -711,6 +790,13 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
         }
         input[type=number] {
           -moz-appearance: textfield;
+        }
+        .animate-in {
+          animation: animate-in 0.2s ease-out;
+        }
+        @keyframes animate-in {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
         }
       `}} />
     </div>

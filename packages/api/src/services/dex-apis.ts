@@ -17,6 +17,12 @@ export const TOKENS: Record<string, string> = {
   DAI: '0xd586e7f844cea2f87f50152665bcbc2c279d8d70'.toLowerCase(),
   WBTC: '0x50b7545627a5162f82a992c33b87adc75187b218'.toLowerCase(),
   WETH: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab'.toLowerCase(),
+  // New Top Tokens (Verified Official Addresses)
+  JOE: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd'.toLowerCase(),
+  QI: '0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5'.toLowerCase(),
+  LINK: '0x5947bb275c521040051d82396192181b413227a3'.toLowerCase(),
+  GMX: '0x62edc0692BD897D2295872a9FFCac5425011c661'.toLowerCase(),
+  PNG: '0x60781C2586D68229fde47564546784ab3fACA982'.toLowerCase(),
 };
 
 export const TOKEN_METADATA: Record<string, { decimals: number }> = {
@@ -27,6 +33,11 @@ export const TOKEN_METADATA: Record<string, { decimals: number }> = {
   [TOKENS.DAI]: { decimals: 18 },
   [TOKENS.WBTC]: { decimals: 8 },
   [TOKENS.WETH]: { decimals: 18 },
+  [TOKENS.JOE]: { decimals: 18 },
+  [TOKENS.QI]: { decimals: 18 },
+  [TOKENS.LINK]: { decimals: 18 },
+  [TOKENS.GMX]: { decimals: 18 },
+  [TOKENS.PNG]: { decimals: 18 },
 };
 
 // Helper to get checksummed address
