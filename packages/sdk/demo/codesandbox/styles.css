@@ -1,0 +1,236 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #e8141a, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.swap-form {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.input-row select,
+.input-group select {
+  flex: 0 0 120px;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.input-row input:focus,
+.input-row select:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: #e8141a;
+}
+
+.swap-icon {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #888;
+  margin: 15px 0;
+}
+
+.swap-button {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #e8141a, #ff6b6b);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.swap-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(232, 20, 26, 0.3);
+}
+
+.swap-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #ff6b6b;
+}
+
+.result {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result h2 {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.best-quote .amount {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #e8141a, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.best-quote .dex {
+  color: #888;
+  font-size: 1.1rem;
+}
+
+.all-quotes {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.all-quotes h3 {
+  margin-bottom: 20px;
+  color: #888;
+}
+
+.all-quotes table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.all-quotes th,
+.all-quotes td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.all-quotes th {
+  color: #888;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.all-quotes tr.best {
+  background: rgba(232, 20, 26, 0.1);
+}
+
+.all-quotes tr.best td {
+  color: #e8141a;
+  font-weight: 600;
+}
+
+.code-example {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+}
+
+.code-example h3 {
+  margin-bottom: 15px;
+  color: #888;
+}
+
+.code-example pre {
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+  white-space: pre-wrap;
+}
+
+.footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer a {
+  color: #e8141a;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}

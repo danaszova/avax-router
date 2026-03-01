@@ -11,16 +11,20 @@ import "./libraries/RouteLib.sol";
 
 /**
  * @title DexRouter
- * @author Avalanche DEX Router Team
+ * @author AVAX Router Team
  * @notice Main entry point for routing swaps across multiple DEXes on Avalanche
- * @dev Routes trades to the best available DEX based on price
+ * @dev Routes trades to the best available DEX based on price, with partner fee support
  */
 contract DexRouter is ReentrancyGuard, Ownable {
     using SafeERC20 for IERC20;
     using RouteLib for address[];
 
-    // Fee in basis points (0.05% = 5 basis points)
-    uint256 public constant FEE_BPS = 5;
+    // Protocol fee in basis points (0.05% = 5 basis points)
+    uint256 public constant PROTOCOL_FEE_BPS = 5;
+    
+    // Maximum partner fee in basis points (0.50% = 50 basis points)
+    uint256 public constant MAX_PARTNER_FEE_BPS = 50;
+    
     uint256 public constant BPS_DENOMINATOR = 10000;
 
     // Mapping of DEX name to adapter
@@ -37,12 +41,14 @@ contract DexRouter is ReentrancyGuard, Ownable {
         uint256 amountIn,
         uint256 amountOut,
         string dexUsed,
-        uint256 feeCollected
+        uint256 protocolFeeCollected,
+        uint256 partnerFeeCollected,
+        address partner
     );
     
     event AdapterRegistered(string indexed dexName, address indexed adapter);
     event AdapterRemoved(string indexed dexName);
-    event FeesWithdrawn(address indexed token, uint256 amount, address recipient);
+    event ProtocolFeesWithdrawn(address indexed token, uint256 amount, address recipient);
 
     /**
      * @notice Constructor
@@ -151,37 +157,46 @@ contract DexRouter is ReentrancyGuard, Ownable {
         uint256 minAmountOut,
         address recipient
     ) external nonReentrant returns (uint256 amountOut) {
-        // Find best DEX
-        (string memory bestDex, uint256 expectedOut) = this.findBestRoute(tokenIn, tokenOut, amountIn);
-        require(expectedOut >= minAmountOut, "Slippage too high");
-
-        // Transfer tokens from user
-        IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
-
-        // Calculate fee
-        uint256 feeAmount = (amountIn * FEE_BPS) / BPS_DENOMINATOR;
-        uint256 swapAmount = amountIn - feeAmount;
-
-        // Approve adapter
-        IERC20(tokenIn).safeIncreaseAllowance(address(adapters[bestDex]), swapAmount);
-
-        // Execute swap
-        amountOut = adapters[bestDex].swap(
-            tokenIn,
-            tokenOut,
-            swapAmount,
-            minAmountOut - ((minAmountOut * FEE_BPS) / BPS_DENOMINATOR), // Adjust min for fee
-            recipient
-        );
-
-        emit SwapExecuted(
-            recipient,
+        // Call with no partner fees
+        amountOut = _executeSwap(
             tokenIn,
             tokenOut,
             amountIn,
-            amountOut,
-            bestDex,
-            feeAmount
+            minAmountOut,
+            recipient,
+            address(0),
+            0
+        );
+    }
+
+    /**
+     * @notice Execute a swap using the best available route with partner fees
+     * @param tokenIn Input token address
+     * @param tokenOut Output token address
+     * @param amountIn Amount of input tokens
+     * @param minAmountOut Minimum output amount (slippage protection)
+     * @param recipient Address to receive the output tokens
+     * @param partner Partner address to receive partner fees (address(0) for no partner)
+     * @param partnerFeeBps Partner fee in basis points (max 50 = 0.50%)
+     * @return amountOut Actual output amount
+     */
+    function swapBestRouteWithPartner(
+        address tokenIn,
+        address tokenOut,
+        uint256 amountIn,
+        uint256 minAmountOut,
+        address recipient,
+        address partner,
+        uint256 partnerFeeBps
+    ) external nonReentrant returns (uint256 amountOut) {
+        amountOut = _executeSwap(
+            tokenIn,
+            tokenOut,
+            amountIn,
+            minAmountOut,
+            recipient,
+            partner,
+            partnerFeeBps
         );
     }
 
@@ -203,14 +218,149 @@ contract DexRouter is ReentrancyGuard, Ownable {
         uint256 minAmountOut,
         address recipient
     ) external nonReentrant returns (uint256 amountOut) {
-        require(address(adapters[dexName]) != address(0), "Adapter not found");
+        amountOut = _executeSwapOnDex(
+            dexName,
+            tokenIn,
+            tokenOut,
+            amountIn,
+            minAmountOut,
+            recipient,
+            address(0),
+            0
+        );
+    }
+
+    /**
+     * @notice Execute a swap on a specific DEX with partner fees
+     * @param dexName Name of the DEX to use
+     * @param tokenIn Input token address
+     * @param tokenOut Output token address
+     * @param amountIn Amount of input tokens
+     * @param minAmountOut Minimum output amount (slippage protection)
+     * @param recipient Address to receive the output tokens
+     * @param partner Partner address to receive partner fees
+     * @param partnerFeeBps Partner fee in basis points (max 50 = 0.50%)
+     * @return amountOut Actual output amount
+     */
+    function swapOnDexWithPartner(
+        string calldata dexName,
+        address tokenIn,
+        address tokenOut,
+        uint256 amountIn,
+        uint256 minAmountOut,
+        address recipient,
+        address partner,
+        uint256 partnerFeeBps
+    ) external nonReentrant returns (uint256 amountOut) {
+        amountOut = _executeSwapOnDex(
+            dexName,
+            tokenIn,
+            tokenOut,
+            amountIn,
+            minAmountOut,
+            recipient,
+            partner,
+            partnerFeeBps
+        );
+    }
+
+    /**
+     * @notice Internal function to execute swap with best route
+     */
+    function _executeSwap(
+        address tokenIn,
+        address tokenOut,
+        uint256 amountIn,
+        uint256 minAmountOut,
+        address recipient,
+        address partner,
+        uint256 partnerFeeBps
+    ) internal returns (uint256 amountOut) {
+        // Validate partner fee
+        require(partnerFeeBps <= MAX_PARTNER_FEE_BPS, "Partner fee too high");
+        
+        // Find best DEX (using amount after fees for comparison)
+        (string memory bestDex, uint256 expectedOut) = this.findBestRoute(tokenIn, tokenOut, amountIn);
+        
+        // Calculate fees
+        uint256 protocolFeeAmount = (amountIn * PROTOCOL_FEE_BPS) / BPS_DENOMINATOR;
+        uint256 partnerFeeAmount = partner != address(0) 
+            ? (amountIn * partnerFeeBps) / BPS_DENOMINATOR 
+            : 0;
+        uint256 totalFees = protocolFeeAmount + partnerFeeAmount;
+        uint256 swapAmount = amountIn - totalFees;
+
+        // Adjust minAmountOut for fees
+        uint256 adjustedMinOut = minAmountOut > totalFees 
+            ? minAmountOut - ((minAmountOut * (PROTOCOL_FEE_BPS + partnerFeeBps)) / BPS_DENOMINATOR)
+            : 0;
+        
+        require(expectedOut >= adjustedMinOut, "Slippage too high");
 
         // Transfer tokens from user
         IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
 
-        // Calculate fee
-        uint256 feeAmount = (amountIn * FEE_BPS) / BPS_DENOMINATOR;
-        uint256 swapAmount = amountIn - feeAmount;
+        // Send partner fee immediately if applicable
+        if (partnerFeeAmount > 0 && partner != address(0)) {
+            IERC20(tokenIn).safeTransfer(partner, partnerFeeAmount);
+        }
+
+        // Approve adapter
+        IERC20(tokenIn).safeIncreaseAllowance(address(adapters[bestDex]), swapAmount);
+
+        // Execute swap
+        amountOut = adapters[bestDex].swap(
+            tokenIn,
+            tokenOut,
+            swapAmount,
+            adjustedMinOut,
+            recipient
+        );
+
+        emit SwapExecuted(
+            recipient,
+            tokenIn,
+            tokenOut,
+            amountIn,
+            amountOut,
+            bestDex,
+            protocolFeeAmount,
+            partnerFeeAmount,
+            partner
+        );
+    }
+
+    /**
+     * @notice Internal function to execute swap on specific DEX
+     */
+    function _executeSwapOnDex(
+        string calldata dexName,
+        address tokenIn,
+        address tokenOut,
+        uint256 amountIn,
+        uint256 minAmountOut,
+        address recipient,
+        address partner,
+        uint256 partnerFeeBps
+    ) internal returns (uint256 amountOut) {
+        require(address(adapters[dexName]) != address(0), "Adapter not found");
+        require(partnerFeeBps <= MAX_PARTNER_FEE_BPS, "Partner fee too high");
+
+        // Calculate fees
+        uint256 protocolFeeAmount = (amountIn * PROTOCOL_FEE_BPS) / BPS_DENOMINATOR;
+        uint256 partnerFeeAmount = partner != address(0) 
+            ? (amountIn * partnerFeeBps) / BPS_DENOMINATOR 
+            : 0;
+        uint256 totalFees = protocolFeeAmount + partnerFeeAmount;
+        uint256 swapAmount = amountIn - totalFees;
+
+        // Transfer tokens from user
+        IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
+
+        // Send partner fee immediately if applicable
+        if (partnerFeeAmount > 0 && partner != address(0)) {
+            IERC20(tokenIn).safeTransfer(partner, partnerFeeAmount);
+        }
 
         // Approve adapter
         IERC20(tokenIn).safeIncreaseAllowance(address(adapters[dexName]), swapAmount);
@@ -231,7 +381,9 @@ contract DexRouter is ReentrancyGuard, Ownable {
             amountIn,
             amountOut,
             dexName,
-            feeAmount
+            protocolFeeAmount,
+            partnerFeeAmount,
+            partner
         );
     }
 
@@ -244,18 +396,18 @@ contract DexRouter is ReentrancyGuard, Ownable {
     }
 
     /**
-     * @notice Withdraw collected fees (owner only)
+     * @notice Withdraw collected protocol fees (owner only)
      * @param token Token address to withdraw
      * @param amount Amount to withdraw
      * @param recipient Address to receive the tokens
      */
-    function withdrawFees(
+    function withdrawProtocolFees(
         address token,
         uint256 amount,
         address recipient
     ) external onlyOwner {
         IERC20(token).safeTransfer(recipient, amount);
-        emit FeesWithdrawn(token, amount, recipient);
+        emit ProtocolFeesWithdrawn(token, amount, recipient);
     }
 
     /**

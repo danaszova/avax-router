@@ -1,0 +1,103 @@
+{
+  "name": "@danaszova/avax-router-sdk",
+  "version": "1.0.2",
+  "description": "🚀 The most powerful DEX aggregator SDK on Avalanche. Get the best swap rates across Trader Joe, Pangolin & more with a single API call. Features React hooks, TypeScript support, and partner fee sharing up to 0.50%.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.mjs",
+      "require": "./dist/react/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src/**/*.ts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0"
+  },
+  "peerDependencies": {
+    "@rainbow-me/rainbowkit": "^2.0.0",
+    "react": ">=18",
+    "viem": "^2.0.0",
+    "wagmi": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@rainbow-me/rainbowkit": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "viem": {
+      "optional": true
+    },
+    "wagmi": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.43",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.2"
+  },
+  "keywords": [
+    "avalanche",
+    "avax",
+    "dex",
+    "dex-aggregator",
+    "router",
+    "swap",
+    "trader-joe",
+    "pangolin",
+    "defi",
+    "react",
+    "react-hooks",
+    "typescript",
+    "sdk",
+    "web3",
+    "crypto",
+    "trading",
+    "amm",
+    "liquidity",
+    "price",
+    "best-price",
+    "token-swap",
+    "ethereum",
+    "arbitrage",
+    "partner-fees",
+    "monetization"
+  ],
+  "author": "AVAX Router Team",
+  "license": "MIT",
+  "homepage": "https://avax-router.com",
+  "bugs": {
+    "url": "https://github.com/avax-router/sdk/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avax-router/sdk.git"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/avax-router"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "sideEffects": false
+}
