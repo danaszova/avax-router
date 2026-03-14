@@ -5,39 +5,68 @@
 
 import { ethers } from 'ethers';
 
-// Token addresses - REAL WORKING ADDRESSES on TraderJoe V1
-// Note: The commonly cited WAVAX (0xB31f66Aa3C1ee3B4...) has NO CODE and doesn't work!
+// Token addresses - VERIFIED OFFICIAL ADDRESSES on Avalanche C-Chain
+// WAVAX: 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7 (official Wrapped AVAX)
 export const TOKENS: Record<string, string> = {
-  // Working WAVAX (this is the actual contract with pools on TJ V1)
+  // === Native/Stablecoins ===
   AVAX: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'.toLowerCase(),
   WAVAX: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7'.toLowerCase(),
-  // USDC - confirmed working with WAVAX pool
-  USDC: '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'.toLowerCase(),
-  USDT: '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7'.toLowerCase(),
-  DAI: '0xd586e7f844cea2f87f50152665bcbc2c279d8d70'.toLowerCase(),
-  WBTC: '0x50b7545627a5162f82a992c33b87adc75187b218'.toLowerCase(),
-  WETH: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab'.toLowerCase(),
-  // New Top Tokens (Verified Official Addresses)
-  JOE: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd'.toLowerCase(),
-  QI: '0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5'.toLowerCase(),
-  LINK: '0x5947bb275c521040051d82396192181b413227a3'.toLowerCase(),
-  GMX: '0x62edc0692BD897D2295872a9FFCac5425011c661'.toLowerCase(),
-  PNG: '0x60781C2586D68229fde47564546784ab3fACA982'.toLowerCase(),
+  USDC: '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e'.toLowerCase(),  // Circle USDC
+  USDT: '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7'.toLowerCase(), // Tether USDT
+  DAI: '0xd586e7f844cea2f87f50152665bcbc2c279d8d70'.toLowerCase(),   // Maker DAI
+  USDC_E: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664'.toLowerCase(), // Bridged USDC.e
+
+  // === Major Cryptos ===
+  WBTC: '0x50b7545627a5162f82a992c33b87adc75187b218'.toLowerCase(),  // Wrapped BTC
+  WETH: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab'.toLowerCase(),  // Wrapped ETH
+  BTC_B: '0x152b9d0FdC40C096757F570A51E494bd4b943E50'.toLowerCase(),  // Bitcoin.b
+  COQ: '0x420FcA0121DC28039145009570975747295f2329'.toLowerCase(),   // Coq Inu
+
+  // === Avalanche DeFi ===
+  JOE: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd'.toLowerCase(),   // TraderJoe
+  PNG: '0x60781C2586D68229fde47564546784ab3fACA982'.toLowerCase(),   // Pangolin
+  QI: '0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5'.toLowerCase(),    // Benqi
+  sAVAX: '0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE'.toLowerCase(), // Benqi sAVAX
+  yyAVAX: '0x5c49b268c9841a1c4964403996b92d7145938e3a'.toLowerCase(), // Yield Yak AVAX
+
+  // === Blue Chips ===
+  LINK: '0x5947bb275c521040051d82396192181b413227a3'.toLowerCase(),  // Chainlink
+  GMX: '0x62edc0692BD897D2295872a9FFCac5425011c661'.toLowerCase(),   // GMX
+  AAVE: '0x63a72806098Bd3D9520cC43356dD78afe5D386D1'.toLowerCase(),  // Aave
+  FRAX: '0xD24C2Ad096400B6FBcd2ad8B24E7acBc21A1da64'.toLowerCase(),  // Frax
+  CRV: '0x47536F17F4fF30e64A96a7555826b8f9e66ec468'.toLowerCase(),   // Curve
+
+  // === Meme/Viral ===
+  KIMBO: '0x8e9226eDcA6B7Fdf5b52D8F2937A632F36B0a1F9'.toLowerCase(), // Kimbo
 };
 
 export const TOKEN_METADATA: Record<string, { decimals: number }> = {
+  // Native/Stablecoins
   [TOKENS.AVAX]: { decimals: 18 },
   [TOKENS.WAVAX]: { decimals: 18 },
   [TOKENS.USDC]: { decimals: 6 },
   [TOKENS.USDT]: { decimals: 6 },
   [TOKENS.DAI]: { decimals: 18 },
+  [TOKENS.USDC_E]: { decimals: 6 },
+  // Major Cryptos
   [TOKENS.WBTC]: { decimals: 8 },
   [TOKENS.WETH]: { decimals: 18 },
+  [TOKENS.BTC_B]: { decimals: 8 },
+  [TOKENS.COQ]: { decimals: 18 },
+  // Avalanche DeFi
   [TOKENS.JOE]: { decimals: 18 },
+  [TOKENS.PNG]: { decimals: 18 },
   [TOKENS.QI]: { decimals: 18 },
+  [TOKENS.sAVAX]: { decimals: 18 },
+  [TOKENS.yyAVAX]: { decimals: 18 },
+  // Blue Chips
   [TOKENS.LINK]: { decimals: 18 },
   [TOKENS.GMX]: { decimals: 18 },
-  [TOKENS.PNG]: { decimals: 18 },
+  [TOKENS.AAVE]: { decimals: 18 },
+  [TOKENS.FRAX]: { decimals: 18 },
+  [TOKENS.CRV]: { decimals: 18 },
+  // Meme
+  [TOKENS.KIMBO]: { decimals: 18 },
 };
 
 // Helper to get checksummed address

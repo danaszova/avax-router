@@ -20,8 +20,8 @@ contract TraderJoeV1Adapter is IDexAdapter {
     // Trader Joe V1 Factory
     address public immutable factory;
 
-    // Common tokens for multi-hop routing
-    address public constant WAVAX = 0xb31f66Aa3C1ee3B4Dd11E3A23d8e14D7254C2d6c;
+    // Common tokens for multi-hop routing (OFFICIAL WAVAX)
+    address public constant WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
 
     /**
      * @notice Constructor

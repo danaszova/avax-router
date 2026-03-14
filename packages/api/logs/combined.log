@@ -681,3 +681,12 @@
 2026-03-14 12:34:36 [info]: GET /api/v1/quote/best {"query":{"tokenIn":"0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7","tokenOut":"0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd","amountIn":"1000000000000000000"},"ip":"::1"}
 2026-03-14 12:34:36 [info]: GET /api/v1/quote/best {"query":{"tokenIn":"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E","tokenOut":"0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7","amountIn":"1000000"},"ip":"::1"}
 2026-03-14 12:50:12 [info]: GET /api/v1/quote/best {"query":{"tokenIn":"0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7","tokenOut":"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E","amountIn":"100000000000000000"},"ip":"::1"}
+2026-03-14 12:57:12 [info]: GET /api/v1/quote/best {"query":{"tokenIn":"0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7","tokenOut":"0x60781C2586D68229fde47564546784ab3fACA982","amountIn":"100000000000000000"},"ip":"::1"}
+2026-03-14 12:57:43 [info]: GET /api/v1/quote/best {"query":{"tokenIn":"0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7","tokenOut":"0x60781C2586D68229fde47564546784ab3fACA982","amountIn":"50000000000000000"},"ip":"::1"}
+2026-03-14 14:17:54 [info]: 🚀 Avalanche DEX Router API running on port 3000
+2026-03-14 14:17:54 [info]: 📊 Health check: http://localhost:3000/api/v1/health
+2026-03-14 14:17:54 [info]: 💱 Quote endpoint: http://localhost:3000/api/v1/quote
+2026-03-14 14:20:17 [info]: 🚀 Avalanche DEX Router API running on port 3000
+2026-03-14 14:20:17 [info]: 📊 Health check: http://localhost:3000/api/v1/health
+2026-03-14 14:20:17 [info]: 💱 Quote endpoint: http://localhost:3000/api/v1/quote
+2026-03-14 14:55:26 [info]: GET /api/v1/quote/best {"query":{"tokenIn":"0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7","tokenOut":"0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE","amountIn":"100000000000000000"},"ip":"::1"}
