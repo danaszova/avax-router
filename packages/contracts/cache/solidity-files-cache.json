@@ -1,9 +1,9 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/DexRouter.sol": {
-      "lastModificationDate": 1771302479931,
-      "contentHash": "441f623bc69fe8c46d2618c3d1cb2e5b",
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/DexRouter.sol": {
+      "lastModificationDate": 1773012160049,
+      "contentHash": "db0354ea3430b64f44ff2e44135334dd",
       "sourceName": "contracts/DexRouter.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -12,6 +12,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -35,6 +36,7 @@
         "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
         "./interfaces/IDexAdapter.sol",
+        "./interfaces/IWAVAX.sol",
         "./libraries/RouteLib.sol"
       ],
       "versionPragmas": [
@@ -44,43 +46,7 @@
         "DexRouter"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/interfaces/IDexAdapter.sol": {
-      "lastModificationDate": 1771299561680,
-      "contentHash": "79df1a587454ee42b2999d02addccac2",
-      "sourceName": "contracts/interfaces/IDexAdapter.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "IDexAdapter"
-      ]
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/libraries/RouteLib.sol": {
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/libraries/RouteLib.sol": {
       "lastModificationDate": 1771299599980,
       "contentHash": "ebbba50d72da8878fca9b43bbce49ab4",
       "sourceName": "contracts/libraries/RouteLib.sol",
@@ -91,6 +57,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -116,8 +83,45 @@
         "RouteLib"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
-      "lastModificationDate": 1771301965626,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/interfaces/IDexAdapter.sol": {
+      "lastModificationDate": 1772917821473,
+      "contentHash": "4147f2d08118d06a27ed7c1b4cc51760",
+      "sourceName": "contracts/interfaces/IDexAdapter.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IDexAdapter"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol": {
+      "lastModificationDate": 1771482056397,
       "contentHash": "190613e556d509d9e9a0ea43dc5d891d",
       "sourceName": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
       "solcConfig": {
@@ -127,6 +131,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -152,8 +157,8 @@
         "ReentrancyGuard"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1771301965613,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1771482056390,
       "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
@@ -163,6 +168,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -190,8 +196,8 @@
         "Ownable"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1771301966955,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1771482057736,
       "contentHash": "9261adf6457863de3e9892f51317ec89",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
@@ -201,6 +207,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -226,8 +233,8 @@
         "IERC20"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
-      "lastModificationDate": 1771301967748,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
+      "lastModificationDate": 1771482058975,
       "contentHash": "1fb9edee1d763745a62d0b1954998792",
       "sourceName": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
       "solcConfig": {
@@ -237,6 +244,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -265,8 +273,8 @@
         "SafeERC20"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1771301965616,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1771482056395,
       "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
@@ -276,6 +284,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -301,8 +310,8 @@
         "Context"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/interfaces/IERC1363.sol": {
-      "lastModificationDate": 1771301965613,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/interfaces/IERC1363.sol": {
+      "lastModificationDate": 1771482056391,
       "contentHash": "a7fd0f05e36b0d0a21c75340c9c639ec",
       "sourceName": "@openzeppelin/contracts/interfaces/IERC1363.sol",
       "solcConfig": {
@@ -312,6 +321,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -340,44 +350,8 @@
         "IERC1363"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/interfaces/IERC20.sol": {
-      "lastModificationDate": 1771301965614,
-      "contentHash": "68620db2da7583d9a4919096ac77f577",
-      "sourceName": "@openzeppelin/contracts/interfaces/IERC20.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../token/ERC20/IERC20.sol"
-      ],
-      "versionPragmas": [
-        ">=0.4.16"
-      ],
-      "artifacts": []
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/interfaces/IERC165.sol": {
-      "lastModificationDate": 1771301965613,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/interfaces/IERC165.sol": {
+      "lastModificationDate": 1771482056391,
       "contentHash": "947853028399b7de34bcc3704ee06e99",
       "sourceName": "@openzeppelin/contracts/interfaces/IERC165.sol",
       "solcConfig": {
@@ -387,6 +361,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -412,8 +387,45 @@
       ],
       "artifacts": []
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1771301966961,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/interfaces/IERC20.sol": {
+      "lastModificationDate": 1771482056391,
+      "contentHash": "68620db2da7583d9a4919096ac77f577",
+      "sourceName": "@openzeppelin/contracts/interfaces/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.4.16"
+      ],
+      "artifacts": []
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "lastModificationDate": 1771482057737,
       "contentHash": "7074c93b1ea0a122063f26ddd1db1032",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
@@ -423,6 +435,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -448,10 +461,10 @@
         "IERC165"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/interfaces/traderjoe/ILBRouter.sol": {
-      "lastModificationDate": 1771299692590,
-      "contentHash": "a183b8e6935e170ec9889a95c0c10304",
-      "sourceName": "contracts/interfaces/traderjoe/ILBRouter.sol",
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1771482058973,
+      "contentHash": "513778b30d2750f5d2b9b19bbcf748a5",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -459,6 +472,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -477,57 +491,179 @@
         }
       },
       "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        ">=0.6.2"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1771482057736,
+      "contentHash": "59dfce11284f2636db261df9b6a18f81",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol",
+        "../../interfaces/draft-IERC6093.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+      "lastModificationDate": 1771482056393,
+      "contentHash": "5041977bbe908de2e6ed0270447f79ad",
+      "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.4"
+      ],
+      "artifacts": [
+        "IERC1155Errors",
+        "IERC20Errors",
+        "IERC721Errors"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/mocks/MockERC20.sol": {
+      "lastModificationDate": 1771303606664,
+      "contentHash": "aa29efffed8f5b485c81081c32f67bb7",
+      "sourceName": "contracts/mocks/MockERC20.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "MockERC20"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/mocks/MockDexAdapter.sol": {
+      "lastModificationDate": 1772832385857,
+      "contentHash": "f6c249e283f84f1a9cb10b10e30cf53a",
+      "sourceName": "contracts/mocks/MockDexAdapter.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IDexAdapter.sol",
         "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "./ILBPair.sol"
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"
       ],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "ILBRouter"
+        "MockDexAdapter"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/interfaces/traderjoe/ILBPair.sol": {
-      "lastModificationDate": 1771299716326,
-      "contentHash": "5dd6dc4e689028ea65f77df4caeb8101",
-      "sourceName": "contracts/interfaces/traderjoe/ILBPair.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ILBPair"
-      ]
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/adapters/TraderJoeV2Adapter.sol": {
-      "lastModificationDate": 1771302517826,
-      "contentHash": "a1b3a2d873c0a0f87c3da3e649a331a2",
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/adapters/TraderJoeV2Adapter.sol": {
+      "lastModificationDate": 1773012263404,
+      "contentHash": "30293836cfada0088f2aef1c2ebc3f06",
       "sourceName": "contracts/adapters/TraderJoeV2Adapter.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -536,6 +672,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -567,8 +704,130 @@
         "TraderJoeV2Adapter"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/adapters/PangolinAdapter.sol": {
-      "lastModificationDate": 1771302530178,
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/interfaces/traderjoe/ILBPair.sol": {
+      "lastModificationDate": 1771299716326,
+      "contentHash": "5dd6dc4e689028ea65f77df4caeb8101",
+      "sourceName": "contracts/interfaces/traderjoe/ILBPair.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ILBPair"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/interfaces/traderjoe/ILBRouter.sol": {
+      "lastModificationDate": 1771299692590,
+      "contentHash": "a183b8e6935e170ec9889a95c0c10304",
+      "sourceName": "contracts/interfaces/traderjoe/ILBRouter.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "./ILBPair.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "ILBRouter"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/adapters/TraderJoeV1Adapter.sol": {
+      "lastModificationDate": 1772832385857,
+      "contentHash": "321cfc9e5193dbc0d7246f49c6537883",
+      "sourceName": "contracts/adapters/TraderJoeV1Adapter.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "../interfaces/IDexAdapter.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IJoeFactory",
+        "IJoeRouter",
+        "TraderJoeV1Adapter"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/adapters/PangolinAdapter.sol": {
+      "lastModificationDate": 1772832385857,
       "contentHash": "bb550f10723f221e1a0b61c94d78f823",
       "sourceName": "contracts/adapters/PangolinAdapter.sol",
       "solcConfig": {
@@ -578,6 +837,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -610,7 +870,7 @@
         "PangolinAdapter"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/interfaces/pangolin/IPangolinRouter.sol": {
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/interfaces/pangolin/IPangolinRouter.sol": {
       "lastModificationDate": 1771299799013,
       "contentHash": "ed985bf918d615b70651ab250e08a0d6",
       "sourceName": "contracts/interfaces/pangolin/IPangolinRouter.sol",
@@ -621,6 +881,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -646,7 +907,7 @@
         "IPangolinRouter"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/interfaces/pangolin/IPangolinPair.sol": {
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/interfaces/pangolin/IPangolinPair.sol": {
       "lastModificationDate": 1771299832568,
       "contentHash": "52c407ffff4f9855b624bc497a044e32",
       "sourceName": "contracts/interfaces/pangolin/IPangolinPair.sol",
@@ -657,6 +918,7 @@
             "enabled": true,
             "runs": 200
           },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -682,10 +944,10 @@
         "IPangolinPair"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
-      "lastModificationDate": 1771301967738,
-      "contentHash": "513778b30d2750f5d2b9b19bbcf748a5",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/interfaces/IWAVAX.sol": {
+      "lastModificationDate": 1772915235577,
+      "contentHash": "53d2bae10b67233a53d2673f90a083c3",
+      "sourceName": "contracts/interfaces/IWAVAX.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -693,85 +955,7 @@
             "enabled": true,
             "runs": 200
           },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC20.sol"
-      ],
-      "versionPragmas": [
-        ">=0.6.2"
-      ],
-      "artifacts": [
-        "IERC20Metadata"
-      ]
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
-      "lastModificationDate": 1771301966955,
-      "contentHash": "59dfce11284f2636db261df9b6a18f81",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./IERC20.sol",
-        "./extensions/IERC20Metadata.sol",
-        "../../utils/Context.sol",
-        "../../interfaces/draft-IERC6093.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "ERC20"
-      ]
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/node_modules/@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
-      "lastModificationDate": 1771301965614,
-      "contentHash": "5041977bbe908de2e6ed0270447f79ad",
-      "sourceName": "@openzeppelin/contracts/interfaces/draft-IERC6093.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -791,56 +975,16 @@
       },
       "imports": [],
       "versionPragmas": [
-        ">=0.8.4"
-      ],
-      "artifacts": [
-        "IERC1155Errors",
-        "IERC20Errors",
-        "IERC721Errors"
-      ]
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/mocks/MockERC20.sol": {
-      "lastModificationDate": 1771303606664,
-      "contentHash": "aa29efffed8f5b485c81081c32f67bb7",
-      "sourceName": "contracts/mocks/MockERC20.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
-      ],
-      "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "MockERC20"
+        "IWAVAX"
       ]
     },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/mocks/MockDexAdapter.sol": {
-      "lastModificationDate": 1771303707053,
-      "contentHash": "f6c249e283f84f1a9cb10b10e30cf53a",
-      "sourceName": "contracts/mocks/MockDexAdapter.sol",
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/adapters/UniswapV2Adapter.sol": {
+      "lastModificationDate": 1773012211912,
+      "contentHash": "466c25649d7c6bc00b00822802721106",
+      "sourceName": "contracts/adapters/UniswapV2Adapter.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -848,46 +992,7 @@
             "enabled": true,
             "runs": 200
           },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IDexAdapter.sol",
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "MockDexAdapter"
-      ]
-    },
-    "/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts/contracts/adapters/TraderJoeV1Adapter.sol": {
-      "lastModificationDate": 1771567357781,
-      "contentHash": "321cfc9e5193dbc0d7246f49c6537883",
-      "sourceName": "contracts/adapters/TraderJoeV1Adapter.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
+          "viaIR": true,
           "evmVersion": "paris",
           "outputSelection": {
             "*": {
@@ -914,9 +1019,51 @@
         "^0.8.20"
       ],
       "artifacts": [
-        "IJoeFactory",
-        "IJoeRouter",
-        "TraderJoeV1Adapter"
+        "IUniswapV2Factory",
+        "IUniswapV2Router",
+        "UniswapV2Adapter"
+      ]
+    },
+    "/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts/contracts/adapters/PlatypusAdapter.sol": {
+      "lastModificationDate": 1772917932848,
+      "contentHash": "6be4758ad4f47f3feb04e135f7e3f6a2",
+      "sourceName": "contracts/adapters/PlatypusAdapter.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "../interfaces/IDexAdapter.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IPlatypusRouter",
+        "PlatypusAdapter"
       ]
     }
   }

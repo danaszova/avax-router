@@ -41,7 +41,7 @@ interface IDexAdapter {
      * @notice Get the DEX name
      * @return Name of the DEX this adapter interfaces with
      */
-    function dexName() external pure returns (string memory);
+    function dexName() external view returns (string memory);
 
     /**
      * @notice Check if a pool exists for a token pair

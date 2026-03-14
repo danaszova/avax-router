@@ -66,6 +66,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.PangolinAdapter__factory>;
     getContractFactory(
+      name: "IPlatypusRouter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPlatypusRouter__factory>;
+    getContractFactory(
+      name: "PlatypusAdapter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PlatypusAdapter__factory>;
+    getContractFactory(
       name: "IJoeFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IJoeFactory__factory>;
@@ -82,6 +90,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TraderJoeV2Adapter__factory>;
     getContractFactory(
+      name: "IUniswapV2Factory",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV2Factory__factory>;
+    getContractFactory(
+      name: "IUniswapV2Router",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUniswapV2Router__factory>;
+    getContractFactory(
+      name: "UniswapV2Adapter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.UniswapV2Adapter__factory>;
+    getContractFactory(
       name: "DexRouter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DexRouter__factory>;
@@ -89,6 +109,10 @@ declare module "hardhat/types/runtime" {
       name: "IDexAdapter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IDexAdapter__factory>;
+    getContractFactory(
+      name: "IWAVAX",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWAVAX__factory>;
     getContractFactory(
       name: "IPangolinPair",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -180,6 +204,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.PangolinAdapter>;
     getContractAt(
+      name: "IPlatypusRouter",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPlatypusRouter>;
+    getContractAt(
+      name: "PlatypusAdapter",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PlatypusAdapter>;
+    getContractAt(
       name: "IJoeFactory",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -200,6 +234,21 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TraderJoeV2Adapter>;
     getContractAt(
+      name: "IUniswapV2Factory",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV2Factory>;
+    getContractAt(
+      name: "IUniswapV2Router",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUniswapV2Router>;
+    getContractAt(
+      name: "UniswapV2Adapter",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.UniswapV2Adapter>;
+    getContractAt(
       name: "DexRouter",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -209,6 +258,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.IDexAdapter>;
+    getContractAt(
+      name: "IWAVAX",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWAVAX>;
     getContractAt(
       name: "IPangolinPair",
       address: string | ethers.Addressable,
@@ -293,6 +347,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.PangolinAdapter>;
     deployContract(
+      name: "IPlatypusRouter",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IPlatypusRouter>;
+    deployContract(
+      name: "PlatypusAdapter",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PlatypusAdapter>;
+    deployContract(
       name: "IJoeFactory",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IJoeFactory>;
@@ -309,6 +371,18 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.TraderJoeV2Adapter>;
     deployContract(
+      name: "IUniswapV2Factory",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IUniswapV2Factory>;
+    deployContract(
+      name: "IUniswapV2Router",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IUniswapV2Router>;
+    deployContract(
+      name: "UniswapV2Adapter",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.UniswapV2Adapter>;
+    deployContract(
       name: "DexRouter",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.DexRouter>;
@@ -316,6 +390,10 @@ declare module "hardhat/types/runtime" {
       name: "IDexAdapter",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IDexAdapter>;
+    deployContract(
+      name: "IWAVAX",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IWAVAX>;
     deployContract(
       name: "IPangolinPair",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -407,6 +485,16 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.PangolinAdapter>;
     deployContract(
+      name: "IPlatypusRouter",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IPlatypusRouter>;
+    deployContract(
+      name: "PlatypusAdapter",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PlatypusAdapter>;
+    deployContract(
       name: "IJoeFactory",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -427,6 +515,21 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.TraderJoeV2Adapter>;
     deployContract(
+      name: "IUniswapV2Factory",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IUniswapV2Factory>;
+    deployContract(
+      name: "IUniswapV2Router",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IUniswapV2Router>;
+    deployContract(
+      name: "UniswapV2Adapter",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.UniswapV2Adapter>;
+    deployContract(
       name: "DexRouter",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -436,6 +539,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IDexAdapter>;
+    deployContract(
+      name: "IWAVAX",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.IWAVAX>;
     deployContract(
       name: "IPangolinPair",
       args: any[],

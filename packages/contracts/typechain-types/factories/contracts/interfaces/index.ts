@@ -4,3 +4,4 @@
 export * as pangolin from "./pangolin";
 export * as traderjoe from "./traderjoe";
 export { IDexAdapter__factory } from "./IDexAdapter__factory";
+export { IWAVAX__factory } from "./IWAVAX__factory";

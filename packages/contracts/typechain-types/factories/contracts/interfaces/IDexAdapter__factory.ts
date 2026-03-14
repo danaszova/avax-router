@@ -19,7 +19,7 @@ const _abi = [
         type: "string",
       },
     ],
-    stateMutability: "pure",
+    stateMutability: "view",
     type: "function",
   },
   {

@@ -6,3 +6,4 @@ export type { pangolin };
 import type * as traderjoe from "./traderjoe";
 export type { traderjoe };
 export type { IDexAdapter } from "./IDexAdapter";
+export type { IWAVAX } from "./IWAVAX";

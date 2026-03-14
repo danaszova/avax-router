@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./interfaces/IDexAdapter.sol";
+import "./interfaces/IWAVAX.sol";
 import "./libraries/RouteLib.sol";
 
 /**
@@ -26,6 +27,9 @@ contract DexRouter is ReentrancyGuard, Ownable {
     uint256 public constant MAX_PARTNER_FEE_BPS = 50;
     
     uint256 public constant BPS_DENOMINATOR = 10000;
+
+    // WAVAX address on Avalanche - CORRECT address with liquidity on TraderJoe V1
+    address public constant WAVAX = 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7;
 
     // Mapping of DEX name to adapter
     mapping(string => IDexAdapter) public adapters;
@@ -417,5 +421,126 @@ contract DexRouter is ReentrancyGuard, Ownable {
     function emergencyWithdraw(address token) external onlyOwner {
         uint256 balance = IERC20(token).balanceOf(address(this));
         IERC20(token).safeTransfer(owner(), balance);
+    }
+
+    // ============ NATIVE AVAX FUNCTIONS ============
+
+    /**
+     * @notice Swap native AVAX for tokens using best route
+     * @param tokenOut Output token address
+     * @param minAmountOut Minimum output amount (slippage protection)
+     * @param recipient Address to receive the output tokens
+     * @return amountOut Actual output amount
+     */
+    function swapAVAXForTokens(
+        address tokenOut,
+        uint256 minAmountOut,
+        address recipient
+    ) external payable nonReentrant returns (uint256 amountOut) {
+        require(msg.value > 0, "No AVAX sent");
+        
+        // Wrap AVAX
+        IWAVAX(WAVAX).deposit{value: msg.value}();
+        
+        // Find best route for WAVAX -> tokenOut
+        (string memory bestDex, uint256 expectedOut) = this.findBestRoute(WAVAX, tokenOut, msg.value);
+        
+        // Calculate fees
+        uint256 protocolFeeAmount = (msg.value * PROTOCOL_FEE_BPS) / BPS_DENOMINATOR;
+        uint256 swapAmount = msg.value - protocolFeeAmount;
+        
+        require(expectedOut >= minAmountOut, "Slippage too high");
+        
+        // Approve adapter
+        IERC20(WAVAX).safeIncreaseAllowance(address(adapters[bestDex]), swapAmount);
+        
+        // Execute swap
+        amountOut = adapters[bestDex].swap(
+            WAVAX,
+            tokenOut,
+            swapAmount,
+            minAmountOut,
+            recipient
+        );
+        
+        emit SwapExecuted(
+            recipient,
+            WAVAX,
+            tokenOut,
+            msg.value,
+            amountOut,
+            bestDex,
+            protocolFeeAmount,
+            0,
+            address(0)
+        );
+    }
+
+    /**
+     * @notice Swap tokens for native AVAX using best route
+     * @param tokenIn Input token address
+     * @param amountIn Amount of input tokens
+     * @param minAmountOut Minimum AVAX output amount (slippage protection)
+     * @param recipient Address to receive the AVAX
+     * @return amountOut Actual AVAX output amount
+     */
+    function swapTokensForAVAX(
+        address tokenIn,
+        uint256 amountIn,
+        uint256 minAmountOut,
+        address payable recipient
+    ) external nonReentrant returns (uint256 amountOut) {
+        // Calculate fees
+        uint256 protocolFeeAmount = (amountIn * PROTOCOL_FEE_BPS) / BPS_DENOMINATOR;
+        uint256 swapAmount = amountIn - protocolFeeAmount;
+        
+        // Find best route for tokenIn -> WAVAX
+        (string memory bestDex, uint256 expectedOut) = this.findBestRoute(tokenIn, WAVAX, swapAmount);
+        
+        require(expectedOut >= minAmountOut, "Slippage too high");
+        
+        // Transfer tokens from user
+        IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
+        
+        // Approve adapter
+        IERC20(tokenIn).safeIncreaseAllowance(address(adapters[bestDex]), swapAmount);
+        
+        // Execute swap (receive WAVAX to this contract)
+        uint256 wavaxAmount = adapters[bestDex].swap(
+            tokenIn,
+            WAVAX,
+            swapAmount,
+            minAmountOut,
+            address(this)
+        );
+        
+        // Unwrap WAVAX to AVAX
+        IWAVAX(WAVAX).withdraw(wavaxAmount);
+        
+        // Send AVAX to recipient
+        (bool success, ) = recipient.call{value: wavaxAmount}("");
+        require(success, "AVAX transfer failed");
+        
+        amountOut = wavaxAmount;
+        
+        emit SwapExecuted(
+            recipient,
+            tokenIn,
+            WAVAX,
+            amountIn,
+            amountOut,
+            bestDex,
+            protocolFeeAmount,
+            0,
+            address(0)
+        );
+    }
+
+    /**
+     * @notice Receive AVAX (for unwrapping WAVAX)
+     */
+    receive() external payable {
+        // Only accept AVAX from WAVAX contract
+        require(msg.sender == WAVAX, "Only WAVAX contract");
     }
 }

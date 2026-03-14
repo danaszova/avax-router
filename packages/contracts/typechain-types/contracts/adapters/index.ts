@@ -3,6 +3,10 @@
 /* eslint-disable */
 import type * as pangolinAdapterSol from "./PangolinAdapter.sol";
 export type { pangolinAdapterSol };
+import type * as platypusAdapterSol from "./PlatypusAdapter.sol";
+export type { platypusAdapterSol };
 import type * as traderJoeV1AdapterSol from "./TraderJoeV1Adapter.sol";
 export type { traderJoeV1AdapterSol };
+import type * as uniswapV2AdapterSol from "./UniswapV2Adapter.sol";
+export type { uniswapV2AdapterSol };
 export type { TraderJoeV2Adapter } from "./TraderJoeV2Adapter";

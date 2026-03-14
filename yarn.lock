@@ -17,7 +17,7 @@
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@avalanche-dex-router/api@file:/Users/dana/DANASZOVA/WORKING/dex-router/packages/api":
+"@avalanche-dex-router/api@file:/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/api":
   version "1.0.0"
   resolved "file:packages/api"
   dependencies:
@@ -29,13 +29,13 @@
     redis "^4.6.12"
     winston "^3.11.0"
 
-"@avalanche-dex-router/contracts@file:/Users/dana/DANASZOVA/WORKING/dex-router/packages/contracts":
+"@avalanche-dex-router/contracts@file:/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/contracts":
   version "1.0.0"
   resolved "file:packages/contracts"
   dependencies:
     "@openzeppelin/contracts" "^5.4.0"
 
-"@avalanche-dex/demo-app@file:/Users/dana/DANASZOVA/WORKING/dex-router/packages/demo-app":
+"@avalanche-dex/demo-app@file:/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/demo-app":
   version "1.0.0"
   resolved "file:packages/demo-app"
   dependencies:
@@ -47,7 +47,7 @@
     viem "^2.0.0"
     wagmi "^2.0.0"
 
-"@avalanche-dex/widget@file:../widget", "@avalanche-dex/widget@file:/Users/dana/DANASZOVA/WORKING/dex-router/packages/widget":
+"@avalanche-dex/widget@file:../widget", "@avalanche-dex/widget@file:/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/widget":
   version "1.0.0"
   resolved "file:packages/widget"
   dependencies:

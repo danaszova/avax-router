@@ -2,5 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as pangolinAdapterSol from "./PangolinAdapter.sol";
+export * as platypusAdapterSol from "./PlatypusAdapter.sol";
 export * as traderJoeV1AdapterSol from "./TraderJoeV1Adapter.sol";
+export * as uniswapV2AdapterSol from "./UniswapV2Adapter.sol";
 export { TraderJoeV2Adapter__factory } from "./TraderJoeV2Adapter__factory";
