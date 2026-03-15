@@ -1,7 +1,7 @@
 {
-  "name": "@danaszova/avax-router-sdk",
-  "version": "1.0.2",
-  "description": "🚀 The most powerful DEX aggregator SDK on Avalanche. Get the best swap rates across Trader Joe, Pangolin & more with a single API call. Features React hooks, TypeScript support, and partner fee sharing up to 0.50%.",
+  "name": "@snowmonster_defi/sdk",
+  "version": "1.0.3",
+  "description": "🚀 The most powerful DEX aggregator SDK on Avalanche by SnowMonster DeFi. Get the best swap rates across Trader Joe, Pangolin & more with a single API call. Features React hooks, TypeScript support, and partner fee sharing up to 0.50%.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -82,19 +82,19 @@
     "partner-fees",
     "monetization"
   ],
-  "author": "AVAX Router Team",
+  "author": "SnowMonster DeFi",
   "license": "MIT",
-  "homepage": "https://avax-router.com",
+  "homepage": "https://github.com/danaszova/avax-router#readme",
   "bugs": {
-    "url": "https://github.com/avax-router/sdk/issues"
+    "url": "https://github.com/danaszova/avax-router/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/avax-router/sdk.git"
+    "url": "git+https://github.com/danaszova/avax-router.git"
   },
   "funding": {
     "type": "github",
-    "url": "https://github.com/sponsors/avax-router"
+    "url": "https://github.com/sponsors/danaszova"
   },
   "engines": {
     "node": ">=16"

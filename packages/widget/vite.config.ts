@@ -19,8 +19,8 @@ export default defineConfig(({ mode }) => {
       lib: {
         entry: resolve(__dirname, 'src/index.ts'),
         name: 'AvalancheDexWidget',
-        formats: ['es', 'cjs', 'umd'],
-        fileName: (format) => `index.${format}.js`,
+        formats: ['es', 'cjs'],
+        fileName: (format) => `index.${format === 'es' ? 'es.js' : 'cjs.js'}`,
       },
       rollupOptions: {
         external: ['react', 'react-dom'],
