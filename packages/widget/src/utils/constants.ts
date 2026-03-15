@@ -169,7 +169,7 @@ export const AVALANCHE_TOKENS: Token[] = [
   },
 ];
 
-export const DEX_ROUTER_ADDRESS = '0x3ff7FAAD7417130C60b7422De712eAd9a7C2e3B5';
+export const DEX_ROUTER_ADDRESS = '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35'; // NEW DEPLOYMENT - March 2026
 
 export const DEFAULT_SLIPPAGE = 0.5; // 0.5%
 

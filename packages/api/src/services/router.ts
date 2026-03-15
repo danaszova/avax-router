@@ -49,12 +49,12 @@ export class RouterService {
     const rpcUrl = process.env.AVALANCHE_RPC_URL || 'https://api.avax.network/ext/bc/C/rpc';
     this.provider = new JsonRpcProvider(rpcUrl);
 
-    // Use our deployed DexRouter
-    const dexRouterAddress = process.env.DEX_ROUTER_ADDRESS || '0x3ff7FAAD7417130C60b7422De712eAd9a7C2e3B5';
+    // Use our deployed DexRouter (NEW DEPLOYMENT - March 2026)
+    const dexRouterAddress = process.env.DEX_ROUTER_ADDRESS || '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35';
     this.dexRouter = new Contract(dexRouterAddress, DEX_ROUTER_ABI, this.provider);
 
     // Initialize adapters (using TraderJoe V1 which has real liquidity)
-    const tjV1AdapterAddress = process.env.TRADER_JOE_V1_ADAPTER_ADDRESS || '0x01A2D4498e36fc29b4B93DA4004BeD15093b2A03';
+    const tjV1AdapterAddress = process.env.TRADER_JOE_V1_ADAPTER_ADDRESS || '0xCAe369BE4c20DcA243710fB84Cd3C99Ce895f11c';
 
     this.adapters.set('TraderJoeV1', new Contract(tjV1AdapterAddress, ADAPTER_ABI, this.provider));
     this.adapters.set('TraderJoeV2', new Contract(tjV1AdapterAddress, ADAPTER_ABI, this.provider)); // Alias for compatibility

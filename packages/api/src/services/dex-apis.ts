@@ -82,8 +82,8 @@ export function getTokenDecimals(address: string): number {
   return metadata ? metadata.decimals : 18;
 }
 
-// DexRouter contract
-const DEX_ROUTER_ADDRESS = '0x3ff7faad7417130c60b7422de712ead9a7c2e3b5';
+// DexRouter contract (NEW DEPLOYMENT - March 2026)
+const DEX_ROUTER_ADDRESS = '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35';
 
 const DEX_ROUTER_ABI = [
   "function getRegisteredDexes() view returns (string[] memory)",
