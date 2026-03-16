@@ -173,4 +173,4 @@ export const DEX_ROUTER_ADDRESS = '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35'; 
 
 export const DEFAULT_SLIPPAGE = 0.5; // 0.5%
 
-export const API_BASE_URL = 'http://localhost:3000/api/v1';
+export const API_BASE_URL = 'https://avax-router-api.avaxrouter.workers.dev';

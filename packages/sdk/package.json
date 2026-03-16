@@ -1,6 +1,6 @@
 {
   "name": "@snowmonster_defi/sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "🚀 The most powerful DEX aggregator SDK on Avalanche by SnowMonster DeFi. Get the best swap rates across Trader Joe, Pangolin & more with a single API call. Features React hooks, TypeScript support, and partner fee sharing up to 0.50%.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 
 // src/types.ts
 var API_ENDPOINTS = {
-  mainnet: "https://api.avaxrouter.com",
+  mainnet: "https://avax-router-api.avaxrouter.workers.dev",
   testnet: "https://api-testnet.avaxrouter.com",
   local: "http://localhost:3000"
 };

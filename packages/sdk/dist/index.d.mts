@@ -105,7 +105,7 @@ declare const AVALANCHE_TOKENS: {
 };
 declare const DEX_ROUTER_ADDRESS: `0x${string}`;
 declare const API_ENDPOINTS: {
-    readonly mainnet: "https://api.avaxrouter.com";
+    readonly mainnet: "https://avax-router-api.avaxrouter.workers.dev";
     readonly testnet: "https://api-testnet.avaxrouter.com";
     readonly local: "http://localhost:3000";
 };

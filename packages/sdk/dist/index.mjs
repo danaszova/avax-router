@@ -9,7 +9,7 @@ var AVALANCHE_TOKENS = {
 };
 var DEX_ROUTER_ADDRESS = "0xYourDeployedContractAddress";
 var API_ENDPOINTS = {
-  mainnet: "https://api.avaxrouter.com",
+  mainnet: "https://avax-router-api.avaxrouter.workers.dev",
   testnet: "https://api-testnet.avaxrouter.com",
   local: "http://localhost:3000"
 };

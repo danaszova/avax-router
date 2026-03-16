@@ -119,7 +119,7 @@ export const DEX_ROUTER_ADDRESS = '0xYourDeployedContractAddress' as `0x${string
 
 // API endpoints
 export const API_ENDPOINTS = {
-  mainnet: 'https://api.avaxrouter.com',
+  mainnet: 'https://avax-router-api.avaxrouter.workers.dev',
   testnet: 'https://api-testnet.avaxrouter.com',
   local: 'http://localhost:3000',
 } as const;
