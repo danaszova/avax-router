@@ -1,0 +1,105 @@
+# GitHub Project Configuration for Avalanche DEX Router Phase 1
+# This file defines the structure of our project board
+
+name: 'Phase 1: Infrastructure Recovery'
+description: 'Fix root cause issues: outdated DEX addresses, token confusion, and non-functional adapters'
+
+# Project views
+views:
+  - name: 'Board View'
+    layout: BOARD_VIEW
+    group_by_field: 'Status'
+    sort_by_fields:
+      - direction: DESC
+        field: 'Priority'
+      - direction: ASC
+        field: 'Title'
+    filter: 'repo:danaszova/avax-router'
+
+  - name: 'Roadmap View'
+    layout: ROADMAP_VIEW
+    group_by_field: 'Milestone'
+    sort_by_fields:
+      - direction: ASC
+        field: 'Due Date'
+
+  - name: 'Table View'
+    layout: TABLE_VIEW
+    sort_by_fields:
+      - direction: DESC
+        field: 'Priority'
+      - direction: ASC
+        field: 'Title'
+
+# Custom fields
+fields:
+  - name: 'Status'
+    type: SINGLE_SELECT
+    options:
+      - name: 'Backlog'
+        color: 'GRAY'
+      - name: 'Ready'
+        color: 'BLUE'
+      - name: 'In Progress'
+        color: 'YELLOW'
+      - name: 'In Review'
+        color: 'PURPLE'
+      - name: 'Done'
+        color: 'GREEN'
+      - name: 'Blocked'
+        color: 'RED'
+
+  - name: 'Priority'
+    type: SINGLE_SELECT
+    options:
+      - name: 'Critical'
+        color: 'RED'
+      - name: 'High'
+        color: 'ORANGE'
+      - name: 'Medium-High'
+        color: 'YELLOW'
+      - name: 'Medium'
+        color: 'GREEN'
+      - name: 'Low'
+        color: 'BLUE'
+
+  - name: 'Assignee'
+    type: TEXT
+
+  - name: 'Estimated Days'
+    type: NUMBER
+
+  - name: 'Milestone'
+    type: SINGLE_SELECT
+    options:
+      - name: 'Week 1-2: Core Functionality'
+        color: 'BLUE'
+      - name: 'Week 3: Testing & Documentation'
+        color: 'GREEN'
+      - name: 'Phase 2: Advanced Features'
+        color: 'PURPLE'
+
+  - name: 'Due Date'
+    type: DATE
+
+  - name: 'Dependencies'
+    type: TEXT
+
+  - name: 'Labels'
+    type: TEXT
+
+# Workflow states (simplified for GitHub Projects)
+workflow:
+  - name: 'Backlog'
+    status: 'Backlog'
+  - name: 'Ready for Work'
+    status: 'Ready'
+  - name: 'In Progress'
+    status: 'In Progress'
+  - name: 'In Review'
+    status: 'In Review'
+  - name: 'Done'
+    status: 'Done'
+
+# Initial items (will be created as issues)
+# These will be populated from the phase1-issues directory
