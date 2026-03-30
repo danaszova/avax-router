@@ -2,23 +2,32 @@ name: Deploy to Vercel
 
 on:
   push:
-    branches: [main, master, develop]
+    branches: [master]
     paths:
       - "packages/demo-app/**"
       - ".github/workflows/deploy-vercel.yml"
+  pull_request:
+    branches: [master]
+    types: [closed]
+    paths:
+      - "packages/demo-app/**"
 
 jobs:
   deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: npm
+          cache-dependency-path: packages/demo-app/package-lock.json
 
       - name: Install Dependencies
         run: npm install
@@ -28,12 +37,44 @@ jobs:
         run: npm run build
         working-directory: packages/demo-app
 
-      - name: Deploy to Vercel
+      - name: Deploy to Vercel Production
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: packages/demo-app
-          vercel-args: "--prod"
+          vercel-args: "--prod --yes"
 
+  preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: packages/demo-app/package-lock.json
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: packages/demo-app
+
+      - name: Build Demo App
+        run: npm run build
+        working-directory: packages/demo-app
+
+      - name: Deploy to Vercel Preview
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: packages/demo-app
+          vercel-args: "--yes"
