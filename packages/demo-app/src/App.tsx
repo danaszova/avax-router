@@ -53,6 +53,7 @@ const App = () => {
                                     borderRadius="lg"
                                     defaultTokenIn="AVAX"
                                     defaultTokenOut="USDC"
+                                    apiUrl={import.meta.env.VITE_API_URL}
                                 />
                             </div>
                         </div>
