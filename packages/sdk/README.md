@@ -7,13 +7,13 @@
 [![bundle size](https://img.shields.io/bundlephobia/minzip/@danaszova/avax-router-sdk?style=flat-square)](https://bundlephobia.com/package/@danaszova/avax-router-sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=flat-square)](https://codesandbox.io/s/github/avax-router/sdk/tree/main/demo/codesandbox)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=flat-square)](https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/)
 
 **🚀 The Most Powerful DEX Aggregator SDK on Avalanche**
 
 *Stop manually checking multiple DEXes. Get the best swap rate with a single API call.*
 
-[**Try Live Demo →**](https://codesandbox.io/s/avax-router-sdk-demo)
+[**Try Live Demo →**](https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/)
 
 </div>
 

@@ -1,6 +1,18 @@
 # Avalanche DEX Router
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=flat-square)](https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/)
+
 A DEX aggregator for the Avalanche network that routes trades across multiple DEXes to find the best prices. Charges a flat **0.05% fee** - 5x cheaper than competitors.
+
+## 🎬 Live Demo
+
+Try the live demo app at: https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/
+
+The demo showcases:
+- Real-time price quotes across multiple DEXes
+- Best route finding with savings calculation
+- Interactive swap simulation
+- Deployed using Cloudflare API for optimal performance
 
 ## 🎯 Value Proposition
 
