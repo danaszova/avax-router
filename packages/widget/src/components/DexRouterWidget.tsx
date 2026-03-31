@@ -192,8 +192,10 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   };
 
   const handleMaxClick = () => {
-    // In real implementation, get balance from wallet
-    setAmountIn('100');
+    // Use real balance from wallet
+    if (balanceData) {
+      setAmountIn(formatUnits(balanceData.value, balanceData.decimals));
+    }
   };
 
   const handleSwap = async () => {
