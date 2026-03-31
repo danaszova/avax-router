@@ -269,8 +269,7 @@ MIT License - see LICENSE file for details.
 
 ## 🆘 Support
 
-- Discord: [Join our community](https://discord.gg/...)
-- Twitter: [@AvalancheDex](https://twitter.com/...)
+
 - Email: support@yourdomain.com
 
 ---
