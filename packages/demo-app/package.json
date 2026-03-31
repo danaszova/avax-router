@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:cloudflare": "vite --mode cloudflare",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build --mode cloudflare",
+    "preview": "vite preview --mode cloudflare"
   },
   "dependencies": {
     "@avalanche-dex/widget": "file:../widget",
