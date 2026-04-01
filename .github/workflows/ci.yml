@@ -1,0 +1,83 @@
+name: CI - Test and Build
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - "packages/demo-app/**"
+      - "packages/widget/**"
+      - "packages/api/**"
+      - "packages/api-worker/**"
+      - "packages/sdk/**"
+  pull_request:
+    branches: [master]
+    paths:
+      - "packages/demo-app/**"
+      - "packages/widget/**"
+      - "packages/api/**"
+      - "packages/api-worker/**"
+      - "packages/sdk/**"
+
+jobs:
+  test-demo-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install Demo App Dependencies
+        run: npm install
+        working-directory: packages/demo-app
+
+      - name: Build Demo App
+        run: npm run build
+        working-directory: packages/demo-app
+        env:
+          VITE_API_URL: https://avax-router-api.avaxrouter.workers.dev
+
+  test-widget:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: packages/widget/package-lock.json
+
+      - name: Install Widget Dependencies
+        run: npm install
+        working-directory: packages/widget
+
+      - name: Build Widget
+        run: npm run build
+        working-directory: packages/widget
+
+  test-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install API Dependencies
+        run: npm install
+        working-directory: packages/api
+
+      - name: Build API
+        run: npm run build
+        working-directory: packages/api
