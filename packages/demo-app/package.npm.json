@@ -7,7 +7,9 @@
     "dev": "vite",
     "dev:cloudflare": "vite --mode cloudflare",
     "build": "vite build --mode cloudflare",
-    "preview": "vite preview --mode cloudflare"
+    "preview": "vite preview --mode cloudflare",
+    "use:npm": "cp package.npm.json package.json && npm install",
+    "use:local": "cp package.local.json package.json && npm install"
   },
   "dependencies": {
     "@snowmonster_defi/widget": "^1.0.4",
