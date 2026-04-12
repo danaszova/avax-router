@@ -8,3 +8,4 @@ export type { interfaces };
 import type * as mocks from "./mocks";
 export type { mocks };
 export type { DexRouter } from "./DexRouter";
+export type { PartnerRegistry } from "./PartnerRegistry";

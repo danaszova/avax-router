@@ -169,8 +169,42 @@ export const AVALANCHE_TOKENS: Token[] = [
   },
 ];
 
-export const DEX_ROUTER_ADDRESS = '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35'; // NEW DEPLOYMENT - March 2026
+// ===== CONTRACT ADDRESSES =====
+
+// Fuji Testnet (Chain ID: 43113)
+export const FUJI_DEX_ROUTER_ADDRESS = '0xc4396498B42DE35D38CE47c38e75240a49B5452a';
+export const FUJI_PARTNER_REGISTRY_ADDRESS = '0xEC19b44BAfB8572dfEaec8Fd38A1E15aCA82E01a';
+export const FUJI_TRADERJOE_V1_ADAPTER = '0x62d133b127786c4D2D9e7D64dDdD4Cac7685eA8c';
+
+// Avalanche Mainnet (Chain ID: 43114)
+export const DEX_ROUTER_ADDRESS = '0x81308B8e4C72E5aA042ADA30f9b29729c5a43098'; // Partner System - April 2026
+export const PARTNER_REGISTRY_ADDRESS = '0xBF1f8E2872E82555e1Ce85b31077e2903368d943';
+export const TRADERJOE_V1_ADAPTER_ADDRESS = '0x108831f20954211336704eaE0483e887a7bfd3A1';
+// Pangolin V2 adapter - deployed April 2026
+export const PANGOLIN_V2_ADAPTER_ADDRESS = '0xc9F25F209c038312218827B4297A956Cfb9cE0b4';
+
+// ===== DEX CONTRACT ADDRESSES (on-chain) =====
+// TraderJoe V1
+export const TJ_V1_ROUTER = '0x60aE616a2155Ee3d9A68541Ba4544862310933d4';
+export const TJ_V1_FACTORY = '0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10';
+// Pangolin V2 (from official SDK: https://github.com/pangolindex/sdk/blob/master/src/chains.ts)
+export const PANGOLIN_V2_ROUTER = '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106';
+export const PANGOLIN_V2_FACTORY = '0xefa94DE7a4656D787667C749f7E1223D71E9FD88';
 
 export const DEFAULT_SLIPPAGE = 0.5; // 0.5%
 
 export const API_BASE_URL = 'https://avax-router-api.avaxrouter.workers.dev';
+
+// ===== MONETIZATION CONFIG =====
+// Default partner address - contract deployer/owner (fees go here when no partner is configured)
+// Fuji testnet owner: 0xB615Cd848630BaCdBb9051f975b8e1450CF58E0B
+export const DEFAULT_PARTNER_ADDRESS = '0xB615Cd848630BaCdBb9051f975b8e1450CF58E0B';
+
+// Default partner fee in basis points (25 = 0.25%)
+// Partners earn this when they configure their address
+// When no partner is configured, this fee goes to DEFAULT_PARTNER_ADDRESS
+export const DEFAULT_PARTNER_FEE_BPS = 25; // 0.25%
+
+// Protocol fee in basis points (5 = 0.05%)
+// This always goes to the contract owner
+export const PROTOCOL_FEE_BPS = 5; // 0.05%

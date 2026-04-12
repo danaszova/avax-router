@@ -82,8 +82,8 @@ export function getTokenDecimals(address: string): number {
   return metadata ? metadata.decimals : 18;
 }
 
-// DexRouter contract (NEW DEPLOYMENT - March 2026)
-const DEX_ROUTER_ADDRESS = '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35';
+// DexRouter contract (Partner System - April 2026)
+const DEX_ROUTER_ADDRESS = '0x81308B8e4C72E5aA042ADA30f9b29729c5a43098';
 
 const DEX_ROUTER_ABI = [
   "function getRegisteredDexes() view returns (string[] memory)",
@@ -189,7 +189,7 @@ export const getTraderJoeQuote = (tokenIn: string, tokenOut: string, amountIn: s
   getDexQuote('TraderJoeV1', tokenIn, tokenOut, amountIn);
 
 export const getPangolinQuote = (tokenIn: string, tokenOut: string, amountIn: string) =>
-  getDexQuote('Pangolin', tokenIn, tokenOut, amountIn);
+  getDexQuote('Pangolin V2', tokenIn, tokenOut, amountIn);
 
 export const getSushiSwapQuote = () => Promise.resolve(null);
 export const getCurveQuote = () => Promise.resolve(null);

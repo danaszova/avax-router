@@ -62,17 +62,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IPangolinFactory__factory>;
     getContractFactory(
-      name: "PangolinAdapter",
+      name: "IPangolinRouter",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PangolinAdapter__factory>;
+    ): Promise<Contracts.IPangolinRouter__factory>;
     getContractFactory(
-      name: "IPlatypusRouter",
+      name: "PangolinV2Adapter",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IPlatypusRouter__factory>;
-    getContractFactory(
-      name: "PlatypusAdapter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PlatypusAdapter__factory>;
+    ): Promise<Contracts.PangolinV2Adapter__factory>;
     getContractFactory(
       name: "IJoeFactory",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -86,22 +82,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.TraderJoeV1Adapter__factory>;
     getContractFactory(
-      name: "TraderJoeV2Adapter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TraderJoeV2Adapter__factory>;
-    getContractFactory(
-      name: "IUniswapV2Factory",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IUniswapV2Factory__factory>;
-    getContractFactory(
-      name: "IUniswapV2Router",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IUniswapV2Router__factory>;
-    getContractFactory(
-      name: "UniswapV2Adapter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.UniswapV2Adapter__factory>;
-    getContractFactory(
       name: "DexRouter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DexRouter__factory>;
@@ -114,22 +94,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IWAVAX__factory>;
     getContractFactory(
-      name: "IPangolinPair",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IPangolinPair__factory>;
-    getContractFactory(
-      name: "IPangolinRouter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IPangolinRouter__factory>;
-    getContractFactory(
-      name: "ILBPair",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILBPair__factory>;
-    getContractFactory(
-      name: "ILBRouter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILBRouter__factory>;
-    getContractFactory(
       name: "MockDexAdapter",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockDexAdapter__factory>;
@@ -137,6 +101,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MockERC20__factory>;
+    getContractFactory(
+      name: "PartnerRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.PartnerRegistry__factory>;
 
     getContractAt(
       name: "Ownable",
@@ -199,20 +167,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IPangolinFactory>;
     getContractAt(
-      name: "PangolinAdapter",
+      name: "IPangolinRouter",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.PangolinAdapter>;
+    ): Promise<Contracts.IPangolinRouter>;
     getContractAt(
-      name: "IPlatypusRouter",
+      name: "PangolinV2Adapter",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.IPlatypusRouter>;
-    getContractAt(
-      name: "PlatypusAdapter",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.PlatypusAdapter>;
+    ): Promise<Contracts.PangolinV2Adapter>;
     getContractAt(
       name: "IJoeFactory",
       address: string | ethers.Addressable,
@@ -229,26 +192,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.TraderJoeV1Adapter>;
     getContractAt(
-      name: "TraderJoeV2Adapter",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.TraderJoeV2Adapter>;
-    getContractAt(
-      name: "IUniswapV2Factory",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IUniswapV2Factory>;
-    getContractAt(
-      name: "IUniswapV2Router",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IUniswapV2Router>;
-    getContractAt(
-      name: "UniswapV2Adapter",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.UniswapV2Adapter>;
-    getContractAt(
       name: "DexRouter",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -264,26 +207,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IWAVAX>;
     getContractAt(
-      name: "IPangolinPair",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IPangolinPair>;
-    getContractAt(
-      name: "IPangolinRouter",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IPangolinRouter>;
-    getContractAt(
-      name: "ILBPair",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ILBPair>;
-    getContractAt(
-      name: "ILBRouter",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ILBRouter>;
-    getContractAt(
       name: "MockDexAdapter",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
@@ -293,6 +216,11 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.MockERC20>;
+    getContractAt(
+      name: "PartnerRegistry",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.PartnerRegistry>;
 
     deployContract(
       name: "Ownable",
@@ -343,17 +271,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IPangolinFactory>;
     deployContract(
-      name: "PangolinAdapter",
+      name: "IPangolinRouter",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PangolinAdapter>;
+    ): Promise<Contracts.IPangolinRouter>;
     deployContract(
-      name: "IPlatypusRouter",
+      name: "PangolinV2Adapter",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IPlatypusRouter>;
-    deployContract(
-      name: "PlatypusAdapter",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PlatypusAdapter>;
+    ): Promise<Contracts.PangolinV2Adapter>;
     deployContract(
       name: "IJoeFactory",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -367,22 +291,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.TraderJoeV1Adapter>;
     deployContract(
-      name: "TraderJoeV2Adapter",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TraderJoeV2Adapter>;
-    deployContract(
-      name: "IUniswapV2Factory",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IUniswapV2Factory>;
-    deployContract(
-      name: "IUniswapV2Router",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IUniswapV2Router>;
-    deployContract(
-      name: "UniswapV2Adapter",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.UniswapV2Adapter>;
-    deployContract(
       name: "DexRouter",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.DexRouter>;
@@ -395,22 +303,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IWAVAX>;
     deployContract(
-      name: "IPangolinPair",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IPangolinPair>;
-    deployContract(
-      name: "IPangolinRouter",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IPangolinRouter>;
-    deployContract(
-      name: "ILBPair",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ILBPair>;
-    deployContract(
-      name: "ILBRouter",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ILBRouter>;
-    deployContract(
       name: "MockDexAdapter",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockDexAdapter>;
@@ -418,6 +310,10 @@ declare module "hardhat/types/runtime" {
       name: "MockERC20",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "PartnerRegistry",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PartnerRegistry>;
 
     deployContract(
       name: "Ownable",
@@ -480,20 +376,15 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IPangolinFactory>;
     deployContract(
-      name: "PangolinAdapter",
+      name: "IPangolinRouter",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PangolinAdapter>;
+    ): Promise<Contracts.IPangolinRouter>;
     deployContract(
-      name: "IPlatypusRouter",
+      name: "PangolinV2Adapter",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IPlatypusRouter>;
-    deployContract(
-      name: "PlatypusAdapter",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.PlatypusAdapter>;
+    ): Promise<Contracts.PangolinV2Adapter>;
     deployContract(
       name: "IJoeFactory",
       args: any[],
@@ -510,26 +401,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.TraderJoeV1Adapter>;
     deployContract(
-      name: "TraderJoeV2Adapter",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TraderJoeV2Adapter>;
-    deployContract(
-      name: "IUniswapV2Factory",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IUniswapV2Factory>;
-    deployContract(
-      name: "IUniswapV2Router",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IUniswapV2Router>;
-    deployContract(
-      name: "UniswapV2Adapter",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.UniswapV2Adapter>;
-    deployContract(
       name: "DexRouter",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -545,26 +416,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.IWAVAX>;
     deployContract(
-      name: "IPangolinPair",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IPangolinPair>;
-    deployContract(
-      name: "IPangolinRouter",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.IPangolinRouter>;
-    deployContract(
-      name: "ILBPair",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ILBPair>;
-    deployContract(
-      name: "ILBRouter",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.ILBRouter>;
-    deployContract(
       name: "MockDexAdapter",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -574,6 +425,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MockERC20>;
+    deployContract(
+      name: "PartnerRegistry",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.PartnerRegistry>;
 
     // default types
     getContractFactory(
