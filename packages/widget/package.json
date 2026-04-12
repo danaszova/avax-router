@@ -1,6 +1,6 @@
 {
   "name": "@snowmonster_defi/widget",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Embeddable DEX aggregator widget for Avalanche — earn 0.25% on every swap with partner fee sharing",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
