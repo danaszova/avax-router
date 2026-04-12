@@ -1,19 +1,17 @@
 {
   "name": "@avalanche-dex/demo-app",
   "version": "1.0.0",
-  "description": "UAT Demo App for Avalanche DEX Router Widget",
+  "description": "UAT Demo App for Avalanche DEX Router Widget (npm package test mode)",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "dev:cloudflare": "vite --mode cloudflare",
     "build": "vite build --mode cloudflare",
-    "preview": "vite preview --mode cloudflare",
-    "use:npm": "cp package.npm.json package.json && npm install",
-    "use:local": "cp package.local.json package.json && npm install",
-    "status": "echo '📦 Current widget source:' && node -e \"const p=require('./package.json'); const dep=p.dependencies['@snowmonster_defi/widget']||p.dependencies['@avalanche-dex/widget']; console.log(dep?'Using: '+dep:'Unknown');\""
+    "preview": "vite preview --mode cloudflare"
   },
   "dependencies": {
-    "@snowmonster_defi/widget": "file:../widget",
+    "@snowmonster_defi/widget": "^1.0.4",
+    "@danaszova/avax-router-sdk": "^1.0.5",
     "@rainbow-me/rainbowkit": "^2.0.0",
     "ethers": "^6.9.0",
     "react": "^18.2.0",

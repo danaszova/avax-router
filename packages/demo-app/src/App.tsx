@@ -1,4 +1,4 @@
-import { DexRouterWidget, Web3Provider } from '../../widget/src';
+import { DexRouterWidget, Web3Provider } from '@snowmonster_defi/widget';
 
 const App = () => {
     return (

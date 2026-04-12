@@ -362,9 +362,33 @@ cd packages/widget && npm run build
 # Build SDK
 cd packages/sdk && npm run build
 
-# Run demo app
+# Run demo app (uses local widget source)
 cd packages/demo-app && npm run dev
 ```
+
+### Switching Between Local & npm Packages
+
+The demo app supports easy switching between the local widget source and the published npm package:
+
+```bash
+cd packages/demo-app
+
+# Default: uses local widget (file:../widget)
+npm run dev
+
+# Switch to test the published npm package
+npm run use:npm    # Switches to @snowmonster_defi/widget from npm
+npm run dev        # Run with npm version
+
+# Switch back to local development
+npm run use:local  # Switches back to local widget source
+npm run dev        # Run with local version
+
+# Check which version is active
+npm run status
+```
+
+This lets you verify that the published npm package works identically to the local source.
 
 ---
 
