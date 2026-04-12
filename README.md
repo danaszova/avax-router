@@ -1,290 +1,262 @@
-# Avalanche DEX Router
+# AVAX Router — Avalanche DEX Aggregator
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg?style=flat-square)](https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/)
+[![npm](https://img.shields.io/npm/v/@snowmonster_defi/widget.svg?style=flat-square)](https://www.npmjs.com/package/@snowmonster_defi/widget)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-A DEX aggregator for the Avalanche network that routes trades across multiple DEXes to find the best prices. Charges a flat **0.05% fee** - 5x cheaper than competitors.
+A DEX aggregator for Avalanche that routes trades across top DEXs to find the best prices. Features a **partner fee sharing system** — integrate our widget and earn **0.25% of every swap**.
 
 ## 🎬 Live Demo
 
-Try the live demo app at: https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/
+Try it live: https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/
 
-The demo showcases:
-- Real-time price quotes across multiple DEXes
-- Best route finding with savings calculation
-- Interactive swap simulation
-- Deployed using Cloudflare API for optimal performance
+- Real-time price quotes across top DEXs
+- Best route finding with live comparison
+- Interactive swap with wallet connection
+- Powered by Cloudflare Workers API
 
-## 🎯 Value Proposition
+## 💰 Partner Fee Sharing (Monetize Your Integration)
 
-- **0.05% fees** vs 0.3% industry standard (6x cheaper)
-- **Multi-DEX routing** across Trader Joe V2 & Pangolin
-- **Best price guarantee** - finds optimal route automatically
-- **Real-time quotes** - sub-100ms response times
+**Integrate the widget → Earn 0.25% on every swap through your app.**
+
+Our smart contract system (`PartnerRegistry`) tracks referrals and automatically splits fees:
+
+| Role | Fee | Description |
+|------|-----|-------------|
+| **Partner** | 0.25% | You earn this on every swap from your integration |
+| **Protocol** | 0.05% | Goes to protocol treasury for maintenance |
+| **Total** | 0.30% | Still 2-3x cheaper than most aggregators |
+
+### How It Works
+
+```
+User swaps $1,000 AVAX → USDC through your integration:
+  → Partner earns: $2.50 (0.25%)
+  → Protocol earns: $0.50 (0.05%)
+  → User pays: $3.00 total (vs $6-10 on competitors)
+```
+
+### Quick Integration
+
+```tsx
+import { DexRouterWidget, Web3Provider } from '@snowmonster_defi/widget';
+
+function App() {
+  return (
+    <Web3Provider>
+      <DexRouterWidget
+        theme="dark"
+        primaryColor="#E84142"
+        partnerId="your-partner-id"     // Register at partner.avaxrouter.com
+        onSwapSuccess={(tx) => console.log('Swap done!', tx)}
+      />
+    </Web3Provider>
+  );
+}
+```
+
+## 📦 Packages
+
+| Package | Description | npm |
+|---------|-------------|-----|
+| [`@snowmonster_defi/widget`](./packages/widget) | Embeddable React swap widget | [![npm](https://img.shields.io/npm/v/@snowmonster_defi/widget.svg)](https://www.npmjs.com/package/@snowmonster_defi/widget) |
+| [`api-worker`](./packages/api-worker) | Cloudflare Worker API | Deployed |
+| [`contracts`](./packages/contracts) | Solidity smart contracts | Verified on C-Chain |
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                        Frontend (Optional)                   │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     API Server (Node.js)                     │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │ Quote Service│  │ Route Finder │  │  Simulator   │      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   Smart Contracts (Solidity)                 │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │  DexRouter   │  │TJ V2 Adapter │  │Pangolin Adapt│      │
-│  └──────────────┘  └──────────────┘  └──────────────┘      │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Underlying DEXs (Trader Joe, Pangolin)          │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│         Your App (React / Next.js)           │
+│    ┌──────────────────────────────────┐      │
+│    │     @snowmonster_defi/widget      │      │
+│    └──────────────────────────────────┘      │
+└──────────────────────┬───────────────────────┘
+                       │ API calls
+                       ▼
+┌─────────────────────────────────────────────┐
+│        Cloudflare Worker API                  │
+│  ┌──────────────┐  ┌───────────────┐         │
+│  │ Quote Service │  │ Route Finder  │         │
+│  └──────────────┘  └───────────────┘         │
+└──────────────────────┬───────────────────────┘
+                       │ on-chain calls
+                       ▼
+┌─────────────────────────────────────────────┐
+│        Smart Contracts (Solidity)             │
+│  ┌──────────────┐  ┌───────────────┐         │
+│  │  DexRouter    │  │PartnerRegistry│         │
+│  └──────┬───────┘  └───────────────┘         │
+│         │                                     │
+│  ┌──────┴───────┐                             │
+│  │TJ V1 Adapter │                             │
+│  └──────────────┘                             │
+└──────────────────────┬───────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│       Trader Joe (top Avalanche DEX)          │
+└─────────────────────────────────────────────┘
 ```
 
-## 📦 Project Structure
+## 🎯 Value Proposition
 
-```
-dex-router/
-├── packages/
-│   ├── contracts/           # Solidity contracts
-│   │   ├── contracts/
-│   │   │   ├── DexRouter.sol       # Main router contract
-│   │   │   ├── adapters/
-│   │   │   │   ├── TraderJoeV2Adapter.sol
-│   │   │   │   └── PangolinAdapter.sol
-│   │   │   ├── interfaces/
-│   │   │   └── libraries/
-│   │   ├── scripts/
-│   │   │   └── deploy.ts
-│   │   └── hardhat.config.ts
-│   │
-│   └── api/                 # Node.js API
-│       ├── src/
-│       │   ├── index.ts
-│       │   ├── routes/
-│       │   │   ├── quote.ts
-│       │   │   └── health.ts
-│       │   ├── services/
-│       │   │   └── router.ts
-│       │   └── utils/
-│       │       └── logger.ts
-│       └── package.json
-│
-├── package.json
-└── README.md
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 18+
-- Yarn or npm
-- A private key with AVAX for gas (testnet or mainnet)
-
-### Installation
-
-```bash
-# Clone and install dependencies
-cd dex-router
-yarn install
-```
-
-### Local Development
-
-```bash
-# Terminal 1: Start API server
-cd packages/api
-cp .env.example .env
-yarn dev
-
-# Terminal 2: Compile contracts
-cd packages/contracts
-cp .env.example .env
-yarn build
-```
-
-### Deploy to Testnet (Fuji)
-
-1. Get testnet AVAX from [Fuji Faucet](https://faucet.avax.network/)
-2. Update `packages/contracts/.env`:
-```env
-PRIVATE_KEY=your_private_key_here
-FUJI_RPC_URL=https://api.avax-test.network/ext/bc/C/rpc
-```
-
-3. Deploy:
-```bash
-cd packages/contracts
-yarn deploy:fuji
-```
-
-4. Copy deployed addresses to `packages/api/.env`
-
-### Deploy to Mainnet
-
-⚠️ **Make sure you understand the risks before deploying to mainnet**
-
-```bash
-cd packages/contracts
-# Update .env with mainnet private key
-yarn deploy:avalanche
-```
+- **0.05% protocol fee** — among the lowest in DeFi
+- **Real-time routing** across top Avalanche DEXs
+- **Partner fee sharing** — earn 0.25% on every swap
+- **Sub-second** finality on Avalanche
+- **Open source** — fully auditable code
 
 ## 📡 API Endpoints
 
-### Get Quote from Specific DEX
+Base URL: `https://avax-router-api.avaxrouter.workers.dev`
+
+### Get Best Quote
 
 ```bash
-GET /api/v1/quote?dex=TraderJoeV2&tokenIn=0x...&tokenOut=0x...&amountIn=1000000000000000000
+GET /quote/best?tokenIn=AVAX&tokenOut=USDC&amountIn=1.0
 ```
 
 Response:
 ```json
 {
-  "dex": "TraderJoeV2",
-  "tokenIn": "0xB31f66AA3C0e6c59128B16A7e6757b4A7d5b2D6c",
-  "tokenOut": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
-  "amountIn": "1000000000000000000",
-  "amountOut": "35421567890123456",
-  "priceImpact": 0.02,
-  "route": ["WAVAX", "USDC"],
-  "estimatedGas": "150000"
-}
-```
-
-### Find Best Route
-
-```bash
-GET /api/v1/quote/best?tokenIn=0x...&tokenOut=0x...&amountIn=1000000000000000000
-```
-
-Response:
-```json
-{
-  "bestDex": "TraderJoeV2",
-  "amountIn": "1000000000000000000",
-  "amountOut": "35421567890123456",
-  "savings": 0.15,
+  "bestDex": "TraderJoeV1",
+  "amountIn": "1.0",
+  "amountOut": "905794",
+  "amountOutFormatted": 0.905794,
+  "priceImpact": 0.05,
+  "route": ["0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7", "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e"],
+  "estimatedGas": "120000",
   "allQuotes": [
-    { "dex": "TraderJoeV2", "amountOut": "35421567890123456" },
-    { "dex": "Pangolin", "amountOut": "35245678901234567" }
+    { "dex": "TraderJoeV1", "amountOut": "905794" }
   ]
 }
 ```
 
-### Compare All DEXes
+### Get Quote from Specific DEX
 
 ```bash
-GET /api/v1/quote/compare?tokenIn=0x...&tokenOut=0x...&amountIn=1000000000000000000
+GET /quote?tokenIn=AVAX&tokenOut=USDC&amountIn=1.0
 ```
 
 ### Health Check
 
 ```bash
-GET /api/v1/health
-GET /api/v1/ready
+GET /health
 ```
 
-## 💰 Supported DEXes
+## 💵 Supported DEXs
 
-| DEX | Type | Volume % | Status |
-|-----|------|----------|--------|
-| Trader Joe V2 | Liquidity Book | ~60% | ✅ MVP |
-| Pangolin | Uniswap V2 | ~20% | ✅ MVP |
-| Platypus | Stableswap | ~10% | 🔄 Phase 2 |
-| Curve | Stableswap | ~5% | 📋 Planned |
+| DEX | Type | Status |
+|-----|------|--------|
+| Trader Joe V1 | AMM | ✅ Live |
+| More coming soon | — | 📋 Planned |
 
-## 🔧 Configuration
+> **Note:** We currently aggregate quotes from Trader Joe V1. More DEX integrations (Pangolin, Curve, Platypus) are planned.
 
-### Environment Variables
+## 🔧 Deployed Contract Addresses
 
-**API (.env)**
-```env
-PORT=3000
-AVALANCHE_RPC_URL=https://api.avax.network/ext/bc/C/rpc
-DEX_ROUTER_ADDRESS=0x...
-LOG_LEVEL=info
+### Avalanche Mainnet (C-Chain, Chain ID: 43114)
+
+| Contract | Address |
+|----------|---------|
+| DexRouter | `0x81308B8e4C72E5aA042ADA30f9b29729c5a43098` |
+| PartnerRegistry | `0xBF1f8E2872E82555e1Ce85b31077e2903368d943` |
+| TraderJoe V1 Adapter | `0x108831f20954211336704eaE0483e887a7bfd3A1` |
+
+### Fuji Testnet (Chain ID: 43113)
+
+| Contract | Address |
+|----------|---------|
+| DexRouter | `0xc4396498B42DE35D38CE47c38e75240a49B5452a` |
+| PartnerRegistry | `0xEC19b44BAfB8572dfEaec8Fd38A1E15aCA82E01a` |
+| TraderJoe V1 Adapter | `0x62d133b127786c4D2D9e7D64dDdD4Cac7685eA8c` |
+
+## 🚀 Quick Start
+
+### Use the Widget in Your App
+
+```bash
+npm install @snowmonster_defi/widget
 ```
 
-**Contracts (.env)**
-```env
-PRIVATE_KEY=0x...
-AVALANCHE_RPC_URL=https://api.avax.network/ext/bc/C/rpc
-SNOWTRACE_API_KEY=your_key
+```tsx
+import { DexRouterWidget, Web3Provider } from '@snowmonster_defi/widget';
+
+function App() {
+  return (
+    <Web3Provider>
+      <DexRouterWidget
+        theme="dark"
+        primaryColor="#E84142"
+        defaultTokenIn="AVAX"
+        defaultTokenOut="USDC"
+      />
+    </Web3Provider>
+  );
+}
 ```
 
-## 📊 Fee Structure
+### Local Development
 
-| Trade Size | Fee | Competitor Fee | Savings |
-|------------|-----|----------------|---------|
-| $100 | $0.05 | $0.30 | 83% |
-| $1,000 | $0.50 | $3.00 | 83% |
-| $10,000 | $5.00 | $30.00 | 83% |
-| $100,000 | $50.00 | $300.00 | 83% |
+```bash
+# Clone and install
+git clone https://github.com/danaszova/avax-router.git
+cd avax-router
+yarn install
+
+# Build widget
+cd packages/widget && npm run build
+
+# Run demo app
+cd packages/demo-app && npm run dev
+```
 
 ## 🔒 Security
 
-- Contracts use OpenZeppelin for security primitives
+- Contracts use OpenZeppelin security primitives
 - ReentrancyGuard on all swap functions
 - Owner-only administrative functions
-- Emergency withdrawal function
-
-### Audit Status
+- Partner fee system is on-chain and transparent
 
 ⚠️ **Contracts are unaudited. Use at your own risk.**
 
-For production use, we recommend:
-1. Professional audit
-2. Bug bounty program
-3. Gradual TVL increase
-
 ## 🗺️ Roadmap
 
-### Phase 1: MVP (Week 1-2) ✅
-- [x] Trader Joe V2 adapter
-- [x] Pangolin adapter
-- [x] Quote API
-- [x] Testnet deployment
+### Phase 1: MVP ✅
+- [x] Trader Joe V1 adapter
+- [x] Cloudflare Worker API
+- [x] React widget (npm package)
+- [x] Partner fee sharing system
+- [x] Mainnet deployment
 
-### Phase 2: Enhancement (Month 2)
-- [ ] Platypus adapter (stablecoins)
-- [ ] Multi-hop routing
-- [ ] Split routing across DEXes
-- [ ] Gas optimization
+### Phase 2: Growth
+- [ ] More DEX integrations (Pangolin, Curve)
+- [ ] Multi-hop routing optimization
+- [ ] Split routing across DEXs
+- [ ] Partner dashboard
 
-### Phase 3: Scale (Month 3+)
-- [ ] Curve integration
-- [ ] WebSocket real-time quotes
+### Phase 3: Scale
+- [ ] Limit orders
 - [ ] MEV protection
-- [ ] Token launch
+- [ ] Cross-chain support
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Run tests: `yarn test`
-4. Submit a pull request
+3. Submit a pull request
 
 ## 📄 License
 
-MIT License - see LICENSE file for details.
+MIT License — see [LICENSE](LICENSE) for details.
 
-## 🆘 Support
+## 🔗 Links
 
-- Discord: [Join our community](https://discord.gg/...)
-- Twitter: [@AvalancheDex](https://twitter.com/...)
-- Email: support@yourdomain.com
+- **Live Demo**: [avax-router-demo](https://avax-router-demo-qjh7of78d-dana-szovas-projects.vercel.app/)
+- **npm Package**: [@snowmonster_defi/widget](https://www.npmjs.com/package/@snowmonster_defi/widget)
+- **GitHub**: [danaszova/avax-router](https://github.com/danaszova/avax-router)
 
 ---
 
-Built with ❤️ for the Avalanche ecosystem
+Built with ❤️ for the Avalanche ecosystem by [SnowMonster DeFi](https://github.com/danaszova)

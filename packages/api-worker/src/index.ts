@@ -9,7 +9,12 @@ import { logger } from 'hono/logger';
 
 // ============== CONSTANTS ==============
 
+// 17 Avalanche tokens with VERIFIED LIQUIDITY on our DEX router
+// Ordered by number of working pairs (most liquid first)
+// Tested April 2026: 259/380 pairs have liquidity across Pangolin V2 + TraderJoe V1
+// Removed: yyAVAX (0 pairs), AAVE (0 pairs), KIMBO (0 pairs) - no liquidity
 const TOKENS: Record<string, string> = {
+  // Tier 1: 16/19 working pairs (highest liquidity)
   AVAX: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',
   WAVAX: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',
   USDC: '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e',
@@ -19,18 +24,17 @@ const TOKENS: Record<string, string> = {
   WBTC: '0x50b7545627a5162f82a992c33b87adc75187b218',
   WETH: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab',
   BTC_B: '0x152b9d0fdc40c096757f570a51e494bd4b943e50',
-  COQ: '0x420fca0121dc28039145009570975747295f2329',
+  SAVAX: '0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be',
+  LINK: '0x5947bb275c521040051d82396192181b413227a3',
+  GMX: '0x62edc0692bd897d2295872a9ffcac5425011c661',
+  FRAX: '0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64',
+  // Tier 2: 14/19 working pairs (good liquidity)
   JOE: '0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd',
   PNG: '0x60781c2586d68229fde47564546784ab3faca982',
   QI: '0x8729438eb15e2c8b576fcc6aecda6a148776c0f5',
-  SAVAX: '0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be',
-  YYAVAX: '0x5c49b268c9841a1c4964403996b92d7145938e3a',
-  LINK: '0x5947bb275c521040051d82396192181b413227a3',
-  GMX: '0x62edc0692bd897d2295872a9ffcac5425011c661',
-  AAVE: '0x63a72806098bd3d9520cc43356dd78afe5d386d1',
-  FRAX: '0xd24c2ad096400b6fbcd2ad8b24e7acbc21a1da64',
   CRV: '0x47536f17f4ff30e64a96a7555826b8f9e66ec468',
-  KIMBO: '0x8e9226edca6b7fdf5b52d8f2937a632f36b0a1f9',
+  // Tier 3: 11/19 working pairs
+  COQ: '0x420fca0121dc28039145009570975747295f2329',
 };
 
 const TOKEN_DECIMALS: Record<string, number> = {
@@ -42,23 +46,20 @@ const TOKEN_DECIMALS: Record<string, number> = {
   [TOKENS.WBTC]: 8,
   [TOKENS.WETH]: 18,
   [TOKENS.BTC_B]: 8,
-  [TOKENS.COQ]: 18,
+  [TOKENS.SAVAX]: 18,
+  [TOKENS.LINK]: 18,
+  [TOKENS.GMX]: 18,
+  [TOKENS.FRAX]: 18,
   [TOKENS.JOE]: 18,
   [TOKENS.PNG]: 18,
   [TOKENS.QI]: 18,
-  [TOKENS.SAVAX]: 18,
-  [TOKENS.YYAVAX]: 18,
-  [TOKENS.LINK]: 18,
-  [TOKENS.GMX]: 18,
-  [TOKENS.AAVE]: 18,
-  [TOKENS.FRAX]: 18,
   [TOKENS.CRV]: 18,
-  [TOKENS.KIMBO]: 18,
+  [TOKENS.COQ]: 18,
 };
 
 const TJ_V1_ROUTER = '0x60aE616a2155Ee3d9A68541Ba4544862310933d4';
 const PANGOLIN_ROUTER = '0xE54Ca86531e17Ef3616d11Ca5b4d259Fa0d24756';
-const DEX_ROUTER_ADDRESS = '0xf081117ccd2f0079f1d08B27cB9AcB2D946fDe35';
+const DEX_ROUTER_ADDRESS = '0x81308B8e4C72E5aA042ADA30f9b29729c5a43098';
 
 const RPC_URLS = [
   'https://api.avax.network/ext/bc/C/rpc',
@@ -147,6 +148,17 @@ function decodeUint256Array(data: string): bigint[] {
 
 function getTokenDecimals(address: string): number {
   return TOKEN_DECIMALS[address.toLowerCase()] || 18;
+}
+
+function parseAmount(amountStr: string, decimals: number): bigint {
+  if (amountStr.includes('.')) {
+    const [whole, decimal = ''] = amountStr.split('.');
+    const decimalPadded = decimal.padEnd(decimals, '0').slice(0, decimals);
+    return BigInt(whole + decimalPadded);
+  } else {
+    // Whole number - multiply by 10^decimals
+    return BigInt(amountStr) * BigInt(10 ** decimals);
+  }
 }
 
 function resolveToken(token: string): string {
@@ -358,15 +370,7 @@ app.get('/quote', async (c) => {
     const inDecimals = getTokenDecimals(tokenInAddress);
     const outDecimals = getTokenDecimals(tokenOutAddress);
 
-    let amountInWei: bigint;
-    const amountStr = amountIn as string;
-    if (amountStr.includes('.')) {
-      const [whole, decimal = ''] = amountStr.split('.');
-      const decimalPadded = decimal.padEnd(inDecimals, '0').slice(0, inDecimals);
-      amountInWei = BigInt(whole + decimalPadded);
-    } else {
-      amountInWei = BigInt(amountStr);
-    }
+    const amountInWei = parseAmount(amountIn as string, inDecimals);
 
     const routerAddress = dex?.toLowerCase() === 'pangolin' ? PANGOLIN_ROUTER : TJ_V1_ROUTER;
     const dexName = dex?.toLowerCase() === 'pangolin' ? 'Pangolin' : 'TraderJoeV1';
@@ -423,15 +427,7 @@ app.get('/quote/best', async (c) => {
     const inDecimals = getTokenDecimals(tokenInAddress);
     const outDecimals = getTokenDecimals(tokenOutAddress);
 
-    let amountInWei: bigint;
-    const amountStr = amountIn as string;
-    if (amountStr.includes('.')) {
-      const [whole, decimal = ''] = amountStr.split('.');
-      const decimalPadded = decimal.padEnd(inDecimals, '0').slice(0, inDecimals);
-      amountInWei = BigInt(whole + decimalPadded);
-    } else {
-      amountInWei = BigInt(amountStr);
-    }
+    const amountInWei = parseAmount(amountIn as string, inDecimals);
 
     const quote = await getMultiHopBestQuote(tokenInAddress, tokenOutAddress, amountInWei);
     const amountOutFormatted = Number(quote.bestAmount) / Math.pow(10, outDecimals);
@@ -474,15 +470,7 @@ app.get('/quote/compare', async (c) => {
     const tokenOutAddress = resolveToken(tokenOut);
     const inDecimals = getTokenDecimals(tokenInAddress);
     
-    let amountInWei: bigint;
-    const amountStr = amountIn as string;
-    if (amountStr.includes('.')) {
-      const [whole, decimal = ''] = amountStr.split('.');
-      const decimalPadded = decimal.padEnd(inDecimals, '0').slice(0, inDecimals);
-      amountInWei = BigInt(whole + decimalPadded);
-    } else {
-      amountInWei = BigInt(amountStr);
-    }
+    const amountInWei = parseAmount(amountIn as string, inDecimals);
 
     const quote = await getMultiHopBestQuote(tokenInAddress, tokenOutAddress, amountInWei);
 
@@ -525,15 +513,7 @@ app.post('/swap/prepare', async (c) => {
     const tokenOutAddress = resolveToken(tokenOut);
     const inDecimals = getTokenDecimals(tokenInAddress);
     
-    let amountInWei: bigint;
-    const amountStr = amountIn as string;
-    if (amountStr.includes('.')) {
-      const [whole, decimal = ''] = amountStr.split('.');
-      const decimalPadded = decimal.padEnd(inDecimals, '0').slice(0, inDecimals);
-      amountInWei = BigInt(whole + decimalPadded);
-    } else {
-      amountInWei = BigInt(amountStr);
-    }
+    const amountInWei = parseAmount(amountIn as string, inDecimals);
     
     const quote = await getMultiHopBestQuote(tokenInAddress, tokenOutAddress, amountInWei);
     const minAmountOut = (BigInt(quote.bestAmount) * BigInt(10000 - Math.floor(slippagePercent * 100))) / 10000n;

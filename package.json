@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "packages/contracts",
-    "packages/api",
+    "packages/api-worker",
+    "packages/sdk",
     "packages/widget",
     "packages/demo-app"
   ],

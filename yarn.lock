@@ -47,8 +47,8 @@
     viem "^2.0.0"
     wagmi "^2.0.0"
 
-"@avalanche-dex/widget@file:../widget", "@avalanche-dex/widget@file:/Users/dana/DANASZOVA/REPOSITORIES/CRYPTO/dex-router/packages/widget":
-  version "1.0.0"
+"@avalanche-dex/widget@file:../widget":
+  version "1.0.2"
   resolved "file:packages/widget"
   dependencies:
     "@rainbow-me/rainbowkit" "^2.2.10"

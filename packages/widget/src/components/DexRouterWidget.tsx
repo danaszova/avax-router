@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Token, Quote, WidgetConfig } from '../types';
-import { AVALANCHE_TOKENS, DEFAULT_SLIPPAGE, API_BASE_URL, DEX_ROUTER_ADDRESS } from '../utils/constants';
+import { AVALANCHE_TOKENS, DEFAULT_SLIPPAGE, API_BASE_URL, DEX_ROUTER_ADDRESS, DEFAULT_PARTNER_FEE_BPS } from '../utils/constants';
 import { useAccount, useWriteContract, useReadContract, useBalance } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatUnits } from 'ethers';
@@ -46,6 +46,21 @@ const DEX_ROUTER_ABI = [
       { name: 'amountIn', type: 'uint256' },
       { name: 'minAmountOut', type: 'uint256' },
       { name: 'recipient', type: 'address' },
+    ],
+    outputs: [{ name: 'amountOut', type: 'uint256' }],
+  },
+  {
+    name: 'swapBestRouteWithPartner',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'tokenIn', type: 'address' },
+      { name: 'tokenOut', type: 'address' },
+      { name: 'amountIn', type: 'uint256' },
+      { name: 'minAmountOut', type: 'uint256' },
+      { name: 'recipient', type: 'address' },
+      { name: 'partnerId', type: 'string' },
+      { name: 'partnerFeeBps', type: 'uint256' },
     ],
     outputs: [{ name: 'amountOut', type: 'uint256' }],
   },
@@ -147,19 +162,19 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
     setError(null);
 
     try {
-      const amountInWei = (parseFloat(amountIn) * Math.pow(10, tokenIn.decimals)).toLocaleString('fullwide', { useGrouping: false });
-
+      // Send human-readable amount - the API handles wei conversion internally
+      // (sending pre-converted wei causes double-conversion bug)
       const params = new URLSearchParams({
         tokenIn: tokenIn.address,
         tokenOut: tokenOut.address,
-        amountIn: amountInWei,
+        amountIn: amountIn,
         ...(partnerId && { partnerId }),
       });
 
       console.log('Fetching quote with params:', {
         tokenIn: tokenIn.address,
         tokenOut: tokenOut.address,
-        amountIn: amountInWei,
+        amountIn: amountIn,
         url: `${apiUrl}/quote/best?${params}`
       });
 
@@ -187,7 +202,8 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   const handleSwapTokens = () => {
     setTokenIn(tokenOut);
     setTokenOut(tokenIn);
-    setAmountIn(quote?.amountOut || '');
+    // Use formatted amount (human-readable), not raw wei
+    setAmountIn(quote?.amountOutFormatted?.toString() || '');
     setQuote(null);
   };
 
@@ -235,19 +251,25 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
         });
       }
 
-      // 3. Execute Swap
-      console.log('Executing swap on-chain...');
+      // 3. Execute Swap with Partner Fees
+      console.log('Executing swap on-chain with partner fees...');
       setError('Step 3/3: Executing Swap...');
+      
+      // Use partner system: partnerId from props or default to 'owner'
+      const partnerFeeBps = BigInt(DEFAULT_PARTNER_FEE_BPS);
+      
       const hash = await writeContract({
         address: DEX_ROUTER_ADDRESS as `0x${string}`,
         abi: DEX_ROUTER_ABI,
-        functionName: 'swapBestRoute',
+        functionName: 'swapBestRouteWithPartner',
         args: [
           tokenIn.address as `0x${string}`,
           tokenOut.address as `0x${string}`,
           amountInWei,
           minAmountOut,
           address as `0x${string}`,
+          partnerId || 'owner', // Partner ID (defaults to 'owner')
+          partnerFeeBps, // Partner fee in basis points
         ],
       });
 
@@ -314,7 +336,7 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
             className="text-[10px] font-bold uppercase tracking-widest mt-0.5"
             style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}
           >
-            0.05% Fee • Aggregated Liquidity
+            0.05% Fee • Top DEX Aggregator
           </p>
         </div>
         <div className="flex items-center gap-2 z-10">
