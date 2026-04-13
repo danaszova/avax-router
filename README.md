@@ -366,29 +366,24 @@ cd packages/sdk && npm run build
 cd packages/demo-app && npm run dev
 ```
 
-### Switching Between Local & npm Packages
+### Testing the Published npm Package
 
-The demo app supports easy switching between the local widget source and the published npm package:
+> ⚠️ **Important**: The demo app lives inside a yarn workspace monorepo. The workspace symlinks the local widget, so npm package testing must be done **outside** the monorepo to avoid conflicts.
+
+A standalone test app is available to verify the published npm package:
 
 ```bash
-cd packages/demo-app
+# Quick test - one command
+./scripts/test-npm-package.sh
 
-# Default: uses local widget (file:../widget)
-npm run dev
-
-# Switch to test the published npm package
-npm run use:npm    # Switches to @snowmonster_defi/widget from npm
-npm run dev        # Run with npm version
-
-# Switch back to local development
-npm run use:local  # Switches back to local widget source
-npm run dev        # Run with local version
-
-# Check which version is active
-npm run status
+# Or manually:
+mkdir -p /tmp/avax-router-npm-test && cd /tmp/avax-router-npm-test
+cp /path/to/dex-router/scripts/test-npm-template/* .
+npm install && npm run dev
+# Opens at http://localhost:5174/
 ```
 
-This lets you verify that the published npm package works identically to the local source.
+This creates a clean project outside the monorepo that installs `@snowmonster_defi/widget` directly from npm — exactly as external developers would.
 
 ---
 
