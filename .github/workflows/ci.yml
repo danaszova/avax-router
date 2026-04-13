@@ -6,7 +6,6 @@ on:
     paths:
       - "packages/demo-app/**"
       - "packages/widget/**"
-      - "packages/api/**"
       - "packages/api-worker/**"
       - "packages/sdk/**"
   pull_request:
@@ -14,7 +13,6 @@ on:
     paths:
       - "packages/demo-app/**"
       - "packages/widget/**"
-      - "packages/api/**"
       - "packages/api-worker/**"
       - "packages/sdk/**"
 
@@ -62,7 +60,7 @@ jobs:
         run: npm run build
         working-directory: packages/widget
 
-  test-api:
+  test-api-worker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -73,11 +71,12 @@ jobs:
         with:
           node-version: 18
           cache: npm
+          cache-dependency-path: packages/api-worker/package-lock.json
 
-      - name: Install API Dependencies
+      - name: Install API Worker Dependencies
         run: npm install
-        working-directory: packages/api
+        working-directory: packages/api-worker
 
-      - name: Build API
-        run: npm run build
-        working-directory: packages/api
+      - name: Type Check API Worker
+        run: npx tsc --noEmit
+        working-directory: packages/api-worker
