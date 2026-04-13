@@ -5,11 +5,21 @@ import { Token } from '../types';
 // Tested April 2026: 259/380 pairs have liquidity across Pangolin V2 + TraderJoe V1
 // Removed: yyAVAX (0 pairs), AAVE (0 pairs), KIMBO (0 pairs) - no liquidity
 export const AVALANCHE_TOKENS: Token[] = [
+  // === Native AVAX (auto-unwraps WAVAX to native AVAX for gas) ===
+  {
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    symbol: 'AVAX',
+    name: 'Avalanche (Native)',
+    decimals: 18,
+    chainId: 43114,
+    logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png',
+    isNative: true,
+  },
   // === Tier 1: 16/19 working pairs (highest liquidity) ===
   {
     address: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-    symbol: 'AVAX',
-    name: 'Avalanche',
+    symbol: 'WAVAX',
+    name: 'Wrapped AVAX',
     decimals: 18,
     chainId: 43114,
     logoURI: 'https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7/logo.png',
@@ -145,6 +155,11 @@ export const AVALANCHE_TOKENS: Token[] = [
     logoURI: 'https://assets.coingecko.com/coins/images/34112/small/coq.png',
   },
 ];
+
+// WAVAX contract address (used for wrapping/unwrapping native AVAX)
+export const WAVAX_ADDRESS = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7' as const;
+// Native AVAX sentinel address (used to represent native AVAX in token list)
+export const NATIVE_AVAX_ADDRESS = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' as const;
 
 // ===== CONTRACT ADDRESSES =====
 

@@ -5,6 +5,8 @@ export interface Token {
   decimals: number;
   logoURI?: string;
   chainId: number;
+  /** If true, this represents the native chain token (e.g. AVAX) and will auto-unwrap from WAVAX */
+  isNative?: boolean;
 }
 
 export interface Quote {
