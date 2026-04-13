@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "dev:cloudflare": "vite --mode cloudflare",
-    "prebuild": "cd ../widget && npm run build",
+    "prebuild": "cd ../sdk && npm run build && cd ../widget && npm run build",
     "build": "vite build --mode cloudflare",
     "preview": "vite preview --mode cloudflare",
     "use:npm": "cp package.npm.json package.json && npm install",
