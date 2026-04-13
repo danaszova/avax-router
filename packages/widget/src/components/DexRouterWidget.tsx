@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Token, Quote, WidgetConfig } from '../types';
 import { AVALANCHE_TOKENS, DEFAULT_SLIPPAGE, API_BASE_URL, DEX_ROUTER_ADDRESS, DEFAULT_PARTNER_FEE_BPS, WAVAX_ADDRESS, NATIVE_AVAX_ADDRESS } from '../utils/constants';
-import { useAccount, useWriteContract, useReadContract, useBalance } from 'wagmi';
+import { useAccount, useWriteContract, useReadContract, useBalance, useDisconnect } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatUnits } from 'ethers';
 
@@ -115,6 +115,7 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   const [txHash, setTxHash] = useState<string | null>(null);
 
   const { isConnected, address } = useAccount();
+  const { disconnect } = useDisconnect();
 
   // Contract Write Hooks
   const { writeContractAsync: writeContract, isPending: isSwapPending } = useWriteContract();
@@ -379,17 +380,33 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
         </div>
         <div className="flex items-center gap-2 z-10">
           {isConnected && address && (
-            <div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border"
-              style={{
-                backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'
-              }}
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-[10px] font-mono font-bold opacity-60">
-                {address.slice(0, 6)}...{address.slice(-4)}
-              </span>
+            <div className="flex items-center gap-1">
+              <div
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl border"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'
+                }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-[10px] font-mono font-bold opacity-60">
+                  {address.slice(0, 6)}...{address.slice(-4)}
+                </span>
+              </div>
+              <button
+                onClick={() => disconnect()}
+                className="p-1.5 rounded-xl transition-all duration-200 hover:scale-110 hover:bg-red-500/10 hover:text-red-500 active:scale-95"
+                title="Disconnect Wallet"
+                style={{
+                  color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </button>
             </div>
           )}
           {!hideSettings && (
