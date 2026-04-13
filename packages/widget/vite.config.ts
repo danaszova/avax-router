@@ -23,7 +23,12 @@ export default defineConfig(({ mode }) => {
         fileName: (format) => `index.${format === 'es' ? 'es.js' : 'cjs.js'}`,
       },
       rollupOptions: {
-        external: ['react', 'react-dom'],
+        external: [
+          'react', 'react-dom',
+          // Externalize heavy deps that consumers already install
+          'wagmi', 'viem', '@tanstack/react-query',
+          '@rainbow-me/rainbowkit', 'ethers', 'zustand',
+        ],
         output: {
           globals: {
             react: 'React',

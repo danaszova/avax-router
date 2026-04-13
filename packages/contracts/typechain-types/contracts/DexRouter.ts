@@ -31,22 +31,27 @@ export interface DexRouterInterface extends Interface {
       | "PROTOCOL_FEE_BPS"
       | "WAVAX"
       | "adapters"
-      | "emergencyWithdraw"
       | "findBestRoute"
+      | "getPartnerAccumulatedFees"
       | "getQuote"
-      | "getRegisteredDexes"
       | "owner"
+      | "partnerAccumulatedFees"
+      | "partnerRegistry"
       | "registerAdapter"
       | "registeredDexes"
       | "removeAdapter"
       | "renounceOwnership"
+      | "setPartnerRegistry"
       | "swapAVAXForTokens"
+      | "swapAVAXForTokensWithPartner"
       | "swapBestRoute"
       | "swapBestRouteWithPartner"
       | "swapOnDex"
       | "swapOnDexWithPartner"
       | "swapTokensForAVAX"
+      | "swapTokensForAVAXWithPartner"
       | "transferOwnership"
+      | "withdrawPartnerFees"
       | "withdrawProtocolFees"
   ): FunctionFragment;
 
@@ -55,6 +60,8 @@ export interface DexRouterInterface extends Interface {
       | "AdapterRegistered"
       | "AdapterRemoved"
       | "OwnershipTransferred"
+      | "PartnerFeesAccumulated"
+      | "PartnerFeesWithdrawn"
       | "ProtocolFeesWithdrawn"
       | "SwapExecuted"
   ): EventFragment;
@@ -74,22 +81,26 @@ export interface DexRouterInterface extends Interface {
   encodeFunctionData(functionFragment: "WAVAX", values?: undefined): string;
   encodeFunctionData(functionFragment: "adapters", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "emergencyWithdraw",
-    values: [AddressLike]
-  ): string;
-  encodeFunctionData(
     functionFragment: "findBestRoute",
     values: [AddressLike, AddressLike, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPartnerAccumulatedFees",
+    values: [AddressLike, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getQuote",
     values: [string, AddressLike, AddressLike, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getRegisteredDexes",
+    functionFragment: "partnerAccumulatedFees",
+    values: [AddressLike, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "partnerRegistry",
     values?: undefined
   ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "registerAdapter",
     values: [string, AddressLike]
@@ -107,8 +118,16 @@ export interface DexRouterInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "setPartnerRegistry",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "swapAVAXForTokens",
     values: [AddressLike, BigNumberish, AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "swapAVAXForTokensWithPartner",
+    values: [AddressLike, BigNumberish, AddressLike, string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "swapBestRoute",
@@ -122,7 +141,7 @@ export interface DexRouterInterface extends Interface {
       BigNumberish,
       BigNumberish,
       AddressLike,
-      AddressLike,
+      string,
       BigNumberish
     ]
   ): string;
@@ -146,7 +165,7 @@ export interface DexRouterInterface extends Interface {
       BigNumberish,
       BigNumberish,
       AddressLike,
-      AddressLike,
+      string,
       BigNumberish
     ]
   ): string;
@@ -155,8 +174,23 @@ export interface DexRouterInterface extends Interface {
     values: [AddressLike, BigNumberish, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
+    functionFragment: "swapTokensForAVAXWithPartner",
+    values: [
+      AddressLike,
+      BigNumberish,
+      BigNumberish,
+      AddressLike,
+      string,
+      BigNumberish
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawPartnerFees",
+    values: [AddressLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "withdrawProtocolFees",
@@ -178,19 +212,23 @@ export interface DexRouterInterface extends Interface {
   decodeFunctionResult(functionFragment: "WAVAX", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "adapters", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "emergencyWithdraw",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "findBestRoute",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getQuote", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getRegisteredDexes",
+    functionFragment: "getPartnerAccumulatedFees",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getQuote", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "partnerAccumulatedFees",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "partnerRegistry",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "registerAdapter",
     data: BytesLike
@@ -208,7 +246,15 @@ export interface DexRouterInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setPartnerRegistry",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "swapAVAXForTokens",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "swapAVAXForTokensWithPartner",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -229,7 +275,15 @@ export interface DexRouterInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "swapTokensForAVAXWithPartner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawPartnerFees",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -269,6 +323,42 @@ export namespace OwnershipTransferredEvent {
   export interface OutputObject {
     previousOwner: string;
     newOwner: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace PartnerFeesAccumulatedEvent {
+  export type InputTuple = [
+    partner: AddressLike,
+    token: AddressLike,
+    amount: BigNumberish
+  ];
+  export type OutputTuple = [partner: string, token: string, amount: bigint];
+  export interface OutputObject {
+    partner: string;
+    token: string;
+    amount: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace PartnerFeesWithdrawnEvent {
+  export type InputTuple = [
+    partner: AddressLike,
+    token: AddressLike,
+    amount: BigNumberish
+  ];
+  export type OutputTuple = [partner: string, token: string, amount: bigint];
+  export interface OutputObject {
+    partner: string;
+    token: string;
+    amount: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -387,15 +477,15 @@ export interface DexRouter extends BaseContract {
 
   adapters: TypedContractMethod<[arg0: string], [string], "view">;
 
-  emergencyWithdraw: TypedContractMethod<
-    [token: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
   findBestRoute: TypedContractMethod<
     [tokenIn: AddressLike, tokenOut: AddressLike, amountIn: BigNumberish],
-    [[string, bigint] & { bestDex: string; bestAmountOut: bigint }],
+    [[string, bigint] & { bestDexName: string; bestAmountOut: bigint }],
+    "view"
+  >;
+
+  getPartnerAccumulatedFees: TypedContractMethod<
+    [partner: AddressLike, token: AddressLike],
+    [bigint],
     "view"
   >;
 
@@ -410,9 +500,15 @@ export interface DexRouter extends BaseContract {
     "view"
   >;
 
-  getRegisteredDexes: TypedContractMethod<[], [string[]], "view">;
-
   owner: TypedContractMethod<[], [string], "view">;
+
+  partnerAccumulatedFees: TypedContractMethod<
+    [arg0: AddressLike, arg1: AddressLike],
+    [bigint],
+    "view"
+  >;
+
+  partnerRegistry: TypedContractMethod<[], [string], "view">;
 
   registerAdapter: TypedContractMethod<
     [dexName: string, adapter: AddressLike],
@@ -426,8 +522,26 @@ export interface DexRouter extends BaseContract {
 
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
+  setPartnerRegistry: TypedContractMethod<
+    [_partnerRegistry: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   swapAVAXForTokens: TypedContractMethod<
     [tokenOut: AddressLike, minAmountOut: BigNumberish, recipient: AddressLike],
+    [bigint],
+    "payable"
+  >;
+
+  swapAVAXForTokensWithPartner: TypedContractMethod<
+    [
+      tokenOut: AddressLike,
+      minAmountOut: BigNumberish,
+      recipient: AddressLike,
+      partnerId: string,
+      partnerFeeBps: BigNumberish
+    ],
     [bigint],
     "payable"
   >;
@@ -451,7 +565,7 @@ export interface DexRouter extends BaseContract {
       amountIn: BigNumberish,
       minAmountOut: BigNumberish,
       recipient: AddressLike,
-      partner: AddressLike,
+      partnerId: string,
       partnerFeeBps: BigNumberish
     ],
     [bigint],
@@ -479,7 +593,7 @@ export interface DexRouter extends BaseContract {
       amountIn: BigNumberish,
       minAmountOut: BigNumberish,
       recipient: AddressLike,
-      partner: AddressLike,
+      partnerId: string,
       partnerFeeBps: BigNumberish
     ],
     [bigint],
@@ -497,8 +611,27 @@ export interface DexRouter extends BaseContract {
     "nonpayable"
   >;
 
+  swapTokensForAVAXWithPartner: TypedContractMethod<
+    [
+      tokenIn: AddressLike,
+      amountIn: BigNumberish,
+      minAmountOut: BigNumberish,
+      recipient: AddressLike,
+      partnerId: string,
+      partnerFeeBps: BigNumberish
+    ],
+    [bigint],
+    "nonpayable"
+  >;
+
   transferOwnership: TypedContractMethod<
     [newOwner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  withdrawPartnerFees: TypedContractMethod<
+    [token: AddressLike, amount: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -529,13 +662,17 @@ export interface DexRouter extends BaseContract {
     nameOrSignature: "adapters"
   ): TypedContractMethod<[arg0: string], [string], "view">;
   getFunction(
-    nameOrSignature: "emergencyWithdraw"
-  ): TypedContractMethod<[token: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "findBestRoute"
   ): TypedContractMethod<
     [tokenIn: AddressLike, tokenOut: AddressLike, amountIn: BigNumberish],
-    [[string, bigint] & { bestDex: string; bestAmountOut: bigint }],
+    [[string, bigint] & { bestDexName: string; bestAmountOut: bigint }],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getPartnerAccumulatedFees"
+  ): TypedContractMethod<
+    [partner: AddressLike, token: AddressLike],
+    [bigint],
     "view"
   >;
   getFunction(
@@ -551,10 +688,17 @@ export interface DexRouter extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "getRegisteredDexes"
-  ): TypedContractMethod<[], [string[]], "view">;
-  getFunction(
     nameOrSignature: "owner"
+  ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "partnerAccumulatedFees"
+  ): TypedContractMethod<
+    [arg0: AddressLike, arg1: AddressLike],
+    [bigint],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "partnerRegistry"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "registerAdapter"
@@ -573,9 +717,25 @@ export interface DexRouter extends BaseContract {
     nameOrSignature: "renounceOwnership"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "setPartnerRegistry"
+  ): TypedContractMethod<[_partnerRegistry: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "swapAVAXForTokens"
   ): TypedContractMethod<
     [tokenOut: AddressLike, minAmountOut: BigNumberish, recipient: AddressLike],
+    [bigint],
+    "payable"
+  >;
+  getFunction(
+    nameOrSignature: "swapAVAXForTokensWithPartner"
+  ): TypedContractMethod<
+    [
+      tokenOut: AddressLike,
+      minAmountOut: BigNumberish,
+      recipient: AddressLike,
+      partnerId: string,
+      partnerFeeBps: BigNumberish
+    ],
     [bigint],
     "payable"
   >;
@@ -601,7 +761,7 @@ export interface DexRouter extends BaseContract {
       amountIn: BigNumberish,
       minAmountOut: BigNumberish,
       recipient: AddressLike,
-      partner: AddressLike,
+      partnerId: string,
       partnerFeeBps: BigNumberish
     ],
     [bigint],
@@ -631,7 +791,7 @@ export interface DexRouter extends BaseContract {
       amountIn: BigNumberish,
       minAmountOut: BigNumberish,
       recipient: AddressLike,
-      partner: AddressLike,
+      partnerId: string,
       partnerFeeBps: BigNumberish
     ],
     [bigint],
@@ -650,8 +810,29 @@ export interface DexRouter extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "swapTokensForAVAXWithPartner"
+  ): TypedContractMethod<
+    [
+      tokenIn: AddressLike,
+      amountIn: BigNumberish,
+      minAmountOut: BigNumberish,
+      recipient: AddressLike,
+      partnerId: string,
+      partnerFeeBps: BigNumberish
+    ],
+    [bigint],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "transferOwnership"
   ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "withdrawPartnerFees"
+  ): TypedContractMethod<
+    [token: AddressLike, amount: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "withdrawProtocolFees"
   ): TypedContractMethod<
@@ -680,6 +861,20 @@ export interface DexRouter extends BaseContract {
     OwnershipTransferredEvent.InputTuple,
     OwnershipTransferredEvent.OutputTuple,
     OwnershipTransferredEvent.OutputObject
+  >;
+  getEvent(
+    key: "PartnerFeesAccumulated"
+  ): TypedContractEvent<
+    PartnerFeesAccumulatedEvent.InputTuple,
+    PartnerFeesAccumulatedEvent.OutputTuple,
+    PartnerFeesAccumulatedEvent.OutputObject
+  >;
+  getEvent(
+    key: "PartnerFeesWithdrawn"
+  ): TypedContractEvent<
+    PartnerFeesWithdrawnEvent.InputTuple,
+    PartnerFeesWithdrawnEvent.OutputTuple,
+    PartnerFeesWithdrawnEvent.OutputObject
   >;
   getEvent(
     key: "ProtocolFeesWithdrawn"
@@ -728,6 +923,28 @@ export interface DexRouter extends BaseContract {
       OwnershipTransferredEvent.InputTuple,
       OwnershipTransferredEvent.OutputTuple,
       OwnershipTransferredEvent.OutputObject
+    >;
+
+    "PartnerFeesAccumulated(address,address,uint256)": TypedContractEvent<
+      PartnerFeesAccumulatedEvent.InputTuple,
+      PartnerFeesAccumulatedEvent.OutputTuple,
+      PartnerFeesAccumulatedEvent.OutputObject
+    >;
+    PartnerFeesAccumulated: TypedContractEvent<
+      PartnerFeesAccumulatedEvent.InputTuple,
+      PartnerFeesAccumulatedEvent.OutputTuple,
+      PartnerFeesAccumulatedEvent.OutputObject
+    >;
+
+    "PartnerFeesWithdrawn(address,address,uint256)": TypedContractEvent<
+      PartnerFeesWithdrawnEvent.InputTuple,
+      PartnerFeesWithdrawnEvent.OutputTuple,
+      PartnerFeesWithdrawnEvent.OutputObject
+    >;
+    PartnerFeesWithdrawn: TypedContractEvent<
+      PartnerFeesWithdrawnEvent.InputTuple,
+      PartnerFeesWithdrawnEvent.OutputTuple,
+      PartnerFeesWithdrawnEvent.OutputObject
     >;
 
     "ProtocolFeesWithdrawn(address,uint256,address)": TypedContractEvent<

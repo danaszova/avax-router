@@ -1,0 +1,10 @@
+{
+  "network": "fuji",
+  "chainId": 43113,
+  "partnerRegistry": "0xEC19b44BAfB8572dfEaec8Fd38A1E15aCA82E01a",
+  "dexRouter": "0xc4396498B42DE35D38CE47c38e75240a49B5452a",
+  "owner": "0xB615Cd848630BaCdBb9051f975b8e1450CF58E0B",
+  "defaultPartner": "owner",
+  "defaultPartnerAddress": "0xB615Cd848630BaCdBb9051f975b8e1450CF58E0B",
+  "deployedAt": "2026-04-04T04:52:00.576Z"
+}

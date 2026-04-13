@@ -5,6 +5,8 @@ export interface Token {
   decimals: number;
   logoURI?: string;
   chainId: number;
+  /** If true, this represents the native chain token (e.g. AVAX) and will auto-unwrap from WAVAX */
+  isNative?: boolean;
 }
 
 export interface Quote {
@@ -12,12 +14,14 @@ export interface Quote {
   tokenOut: string;
   amountIn: string;
   amountOut: string;
+  amountOutFormatted?: number;
   bestDex: string;
   priceImpact: number;
   route: string[];
   estimatedGas: number;
   savings: number;
   allQuotes: SingleQuote[];
+  timestamp?: number;
 }
 
 export interface SingleQuote {
@@ -37,7 +41,12 @@ export interface WidgetConfig {
   slippage?: number;
   hideRouteInfo?: boolean;
   hideSettings?: boolean;
+  /** @deprecated Use partnerAddress instead */
   partnerId?: string;
+  /** Partner wallet address to receive fees (0.25% of swaps) */
+  partnerAddress?: string;
+  /** Partner fee in basis points (default: 25 = 0.25%, max: 50 = 0.50%) */
+  partnerFeeBps?: number;
   apiUrl?: string;
   onSwapStart?: (quote: Quote) => void;
   onSwapSuccess?: (receipt: any) => void;

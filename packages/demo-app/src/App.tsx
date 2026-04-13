@@ -1,4 +1,4 @@
-import { DexRouterWidget, Web3Provider } from '../../widget/src';
+import { DexRouterWidget, Web3Provider } from '@snowmonster_defi/widget';
 
 const App = () => {
     return (
@@ -28,11 +28,11 @@ const App = () => {
                     {/* Hero Section */}
                     <section className="hero">
                         <div className="hero-content">
-                            <span className="section-tag">The Intelligent DEX Aggregator</span>
-                            <h1>No Favorites. No Games. <span>Just the Best Price.</span></h1>
+                            <span className="section-tag">Avalanche DEX Aggregator</span>
+                            <h1>Smart Routing. <span>Best Price.</span></h1>
                             <p>
-                                We query every DEX on Avalanche in real-time and route your trade 
-                                to the winner — automatically. Zero bias. Pure math. Maximum value.
+                            We query top DEXs on Avalanche in real-time and route your trade 
+                            to the best price — automatically. Starting with Trader Joe. Low fees. Fast execution.
                             </p>
                             <div className="hero-actions">
                                 <a href="#widget" className="btn-primary">Start Swapping</a>
@@ -66,8 +66,8 @@ const App = () => {
                             <p>Protocol Fee</p>
                         </div>
                         <div className="stat-card">
-                            <h3>All</h3>
-                            <p>Major DEXs Aggregated</p>
+                            <h3>Top</h3>
+                            <p>DEXs Aggregated</p>
                         </div>
                         <div className="stat-card">
                             <h3>~2s</h3>
@@ -79,11 +79,11 @@ const App = () => {
                     <section style={{ padding: '80px 0', textAlign: 'center' }}>
                         <span className="section-tag">Our Promise</span>
                         <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', maxWidth: '800px', margin: '0 auto' }}>
-                            We Don't Guess. <span>We Query.</span>
+                            Live Price Comparison. <span>Every Swap.</span>
                         </h2>
                         <p style={{ fontSize: '1.2rem', opacity: 0.7, maxWidth: '700px', margin: '1.5rem auto 0', lineHeight: '1.8' }}>
-                            Every swap triggers a real-time comparison across every registered DEX on Avalanche. 
-                            No cached prices. No stale data. Just live queries that find you the best route — every single time.
+                            Every swap triggers a real-time comparison across supported Avalanche DEXs, starting with Trader Joe.
+                            No cached prices. No stale data. Live queries that find you the best route — every single time.
                         </p>
                     </section>
 
@@ -95,7 +95,7 @@ const App = () => {
                             <div className="stat-card" style={{ textAlign: 'left' }}>
                                 <h4 style={{ color: '#E8141A', fontSize: '1.5rem', marginBottom: '1rem' }}>Real-Time Aggregation</h4>
                                 <p style={{ textTransform: 'none', fontSize: '1rem', lineHeight: '1.6', letterSpacing: '0' }}>
-                                    We don't cache. We don't guess. Every swap queries Trader Joe, Pangolin, and more — live — to find the true best price.
+                                    We don't cache. We don't guess. Every swap queries top DEXs like Trader Joe — live — to find the true best price.
                                 </p>
                             </div>
                             <div className="stat-card" style={{ textAlign: 'left' }}>
@@ -125,8 +125,8 @@ const App = () => {
                             </div>
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(232, 20, 26, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', fontSize: '1.5rem', fontWeight: 'bold', color: '#E8141A' }}>2</div>
-                                <h4 style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>We Query Every DEX</h4>
-                                <p style={{ opacity: 0.6, fontSize: '0.95rem', lineHeight: '1.6' }}>Real-time price discovery across all registered exchanges.</p>
+                                <h4 style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>We Query Top DEXs</h4>
+                                <p style={{ opacity: 0.6, fontSize: '0.95rem', lineHeight: '1.6' }}>Real-time price discovery across supported exchanges.</p>
                             </div>
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(232, 20, 26, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', fontSize: '1.5rem', fontWeight: 'bold', color: '#E8141A' }}>3</div>
@@ -147,7 +147,7 @@ const App = () => {
                                 </div>
                                 <div className="code-content">
                                     <pre>
-                                        <code>{`import { DexRouterWidget } from '@avax-router/sdk';
+                                        <code>{`import { DexRouterWidget } from '@snowmonster_defi/widget';
 
 const App = () => (
   <DexRouterWidget
@@ -164,7 +164,7 @@ const App = () => (
                                 <h2>DeFi in a Box. <span>Free Forever.</span></h2>
                                 <p style={{ marginBottom: '2rem', fontSize: '1.1rem', opacity: 0.7 }}>
                                     Drop the AVAX Router widget into your React app and give your users best-in-class swap functionality 
-                                    in minutes. Fully open source. No hidden fees. No vendor lock-in.
+                                    in minutes. Open source. Partner fee sharing built-in. No vendor lock-in.
                                 </p>
                                 <div className="features-small" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                                     <div style={{ opacity: 0.8 }}>
@@ -176,12 +176,12 @@ const App = () => (
                                         <p style={{ fontSize: '0.85rem' }}>Auto AVAX wrapping, multi-hop routing, gas estimates.</p>
                                     </div>
                                     <div style={{ opacity: 0.8 }}>
-                                        <h4 style={{ color: '#E8141A', marginBottom: '0.5rem' }}>Open Source</h4>
-                                        <p style={{ fontSize: '0.85rem' }}>Audit the code. Fork it. Build on top of it.</p>
+                                        <h4 style={{ color: '#E8141A', marginBottom: '0.5rem' }}>Partner Revenue</h4>
+                                        <p style={{ fontSize: '0.85rem' }}>Earn 0.25% on every swap through your integration.</p>
                                     </div>
                                     <div style={{ opacity: 0.8 }}>
-                                        <h4 style={{ color: '#E8141A', marginBottom: '0.5rem' }}>TypeScript Native</h4>
-                                        <p style={{ fontSize: '0.85rem' }}>Full type safety and excellent DX out of the box.</p>
+                                        <h4 style={{ color: '#E8141A', marginBottom: '0.5rem' }}>Open Source</h4>
+                                        <p style={{ fontSize: '0.85rem' }}>Audit the code. Fork it. Build on top of it.</p>
                                     </div>
                                 </div>
                             </div>
@@ -220,16 +220,15 @@ const App = () => (
                             <span>AVAX<span>ROUTER</span></span>
                         </a>
                         <p style={{ opacity: 0.5, fontSize: '0.9rem' }}>
-                            No favorites. No games. Just the best price.
+                            Smart routing for Avalanche DeFi
                         </p>
                         <div style={{ display: 'flex', gap: '2rem' }}>
-                            <a href="#" style={{ color: 'white', textDecoration: 'none', opacity: 0.5, fontSize: '0.9rem' }}>Twitter</a>
-                            <a href="#" style={{ color: 'white', textDecoration: 'none', opacity: 0.5, fontSize: '0.9rem' }}>GitHub</a>
-                            <a href="#" style={{ color: 'white', textDecoration: 'none', opacity: 0.5, fontSize: '0.9rem' }}>Docs</a>
+                            <a href="https://www.npmjs.com/package/@snowmonster_defi/widget" target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none', opacity: 0.5, fontSize: '0.9rem' }}>npm</a>
+                            <a href="https://github.com/danaszova/avax-router" target="_blank" rel="noopener noreferrer" style={{ color: 'white', textDecoration: 'none', opacity: 0.5, fontSize: '0.9rem' }}>GitHub</a>
                         </div>
                     </div>
                     <div className="landing-container" style={{ marginTop: '30px', textAlign: 'center' }}>
-                        <p style={{ opacity: 0.3, fontSize: '0.8rem' }}>© 2026 AVAX Router. Built on Avalanche. Open Source Forever.</p>
+                        <p style={{ opacity: 0.3, fontSize: '0.8rem' }}>© 2026 SnowMonster DeFi. Built on Avalanche. Open Source.</p>
                     </div>
                 </footer>
             </div>

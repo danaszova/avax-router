@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Token, Quote, WidgetConfig } from '../types';
-import { AVALANCHE_TOKENS, DEFAULT_SLIPPAGE, API_BASE_URL, DEX_ROUTER_ADDRESS } from '../utils/constants';
+import { AVALANCHE_TOKENS, DEFAULT_SLIPPAGE, API_BASE_URL, DEX_ROUTER_ADDRESS, DEFAULT_PARTNER_FEE_BPS, WAVAX_ADDRESS, NATIVE_AVAX_ADDRESS } from '../utils/constants';
 import { useAccount, useWriteContract, useReadContract, useBalance } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatUnits } from 'ethers';
@@ -49,6 +49,21 @@ const DEX_ROUTER_ABI = [
     ],
     outputs: [{ name: 'amountOut', type: 'uint256' }],
   },
+  {
+    name: 'swapBestRouteWithPartner',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'tokenIn', type: 'address' },
+      { name: 'tokenOut', type: 'address' },
+      { name: 'amountIn', type: 'uint256' },
+      { name: 'minAmountOut', type: 'uint256' },
+      { name: 'recipient', type: 'address' },
+      { name: 'partnerId', type: 'string' },
+      { name: 'partnerFeeBps', type: 'uint256' },
+    ],
+    outputs: [{ name: 'amountOut', type: 'uint256' }],
+  },
 ] as const;
 
 const WAVAX_ABI = [
@@ -57,6 +72,13 @@ const WAVAX_ABI = [
     type: 'function',
     stateMutability: 'payable',
     inputs: [],
+    outputs: [],
+  },
+  {
+    name: 'withdraw',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [{ name: 'amount', type: 'uint256' }],
     outputs: [],
   },
 ] as const;
@@ -96,20 +118,25 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
 
   // Contract Write Hooks
   const { writeContractAsync: writeContract, isPending: isSwapPending } = useWriteContract();
+  // Helper: is this token native AVAX?
+  const isNativeAvax = (token: Token | null) => token?.isNative === true || token?.address === NATIVE_AVAX_ADDRESS;
+
+  // For native AVAX, show native balance; for WAVAX/other, use ERC20 balance
   const { data: balanceData } = useBalance({
     address: address,
-    token: tokenIn?.symbol === 'AVAX' ? undefined : (tokenIn?.address as `0x${string}`),
+    token: isNativeAvax(tokenIn) ? undefined : (tokenIn?.address as `0x${string}`),
   });
 
-  // Allowance Handling
+  // Allowance Handling - only for ERC20 tokens (not native AVAX)
   const { data: allowance } = useReadContract({
     address: tokenIn?.address as `0x${string}`,
     abi: ERC20_ABI,
     functionName: 'allowance',
-    args: address && tokenIn?.symbol !== 'AVAX' ? [address as `0x${string}`, DEX_ROUTER_ADDRESS as `0x${string}`] : undefined,
+    args: address && !isNativeAvax(tokenIn) ? [address as `0x${string}`, DEX_ROUTER_ADDRESS as `0x${string}`] : undefined,
   });
 
-  const needsApproval = tokenIn?.symbol !== 'AVAX' &&
+  const needsApproval = !isNativeAvax(tokenIn) &&
+    tokenIn?.symbol !== 'AVAX' &&
     allowance !== undefined &&
     quote !== undefined &&
     BigInt(allowance?.toString() || '0') < BigInt(Math.floor(parseFloat(amountIn || '0') * Math.pow(10, tokenIn?.decimals || 18)));
@@ -147,19 +174,24 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
     setError(null);
 
     try {
-      const amountInWei = (parseFloat(amountIn) * Math.pow(10, tokenIn.decimals)).toLocaleString('fullwide', { useGrouping: false });
+      // For native AVAX, substitute WAVAX address for the API call
+      // (DEXes only work with WAVAX, we auto-unwrap after swap)
+      const effectiveTokenOut = isNativeAvax(tokenOut) ? WAVAX_ADDRESS : tokenOut.address;
+      const effectiveTokenIn = isNativeAvax(tokenIn) ? WAVAX_ADDRESS : tokenIn.address;
 
+      // Send human-readable amount - the API handles wei conversion internally
+      // (sending pre-converted wei causes double-conversion bug)
       const params = new URLSearchParams({
-        tokenIn: tokenIn.address,
-        tokenOut: tokenOut.address,
-        amountIn: amountInWei,
+        tokenIn: effectiveTokenIn,
+        tokenOut: effectiveTokenOut,
+        amountIn: amountIn,
         ...(partnerId && { partnerId }),
       });
 
       console.log('Fetching quote with params:', {
         tokenIn: tokenIn.address,
         tokenOut: tokenOut.address,
-        amountIn: amountInWei,
+        amountIn: amountIn,
         url: `${apiUrl}/quote/best?${params}`
       });
 
@@ -187,7 +219,8 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   const handleSwapTokens = () => {
     setTokenIn(tokenOut);
     setTokenOut(tokenIn);
-    setAmountIn(quote?.amountOut || '');
+    // Use formatted amount (human-readable), not raw wei
+    setAmountIn(quote?.amountOutFormatted?.toString() || '');
     setQuote(null);
   };
 
@@ -204,54 +237,81 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
     setLoading(true);
     setError(null);
 
+    // Determine effective addresses for contract calls
+    // Native AVAX uses WAVAX on-chain; we wrap/unwrap as needed
+    const swapTokenIn = isNativeAvax(tokenIn) ? WAVAX_ADDRESS : tokenIn.address;
+    const swapTokenOut = isNativeAvax(tokenOut) ? WAVAX_ADDRESS : tokenOut.address;
+    const buyingNativeAvax = isNativeAvax(tokenOut);
+    const sellingNativeAvax = isNativeAvax(tokenIn);
+
     try {
       onSwapStart?.(quote);
 
       const amountInWei = BigInt(Math.floor(parseFloat(amountIn) * Math.pow(10, tokenIn.decimals)));
       const minAmountOut = (BigInt(quote.amountOut) * BigInt(Math.floor((1 - customSlippage / 100) * 10000))) / 10000n;
 
-      // 1. Handle Native AVAX -> WAVAX wrapping
-      if (tokenIn.symbol === 'AVAX') {
-        console.log('Wrapping native AVAX to WAVAX...');
-        setError('Step 1/3: Wrapping AVAX...');
+      // STEP 1: If selling native AVAX, wrap it to WAVAX first
+      if (sellingNativeAvax) {
+        console.log('Step 1: Wrapping native AVAX to WAVAX...');
+        setError('Step 1/4: Wrapping AVAX to WAVAX...');
         await writeContract({
-          address: tokenIn.address as `0x${string}`,
+          address: WAVAX_ADDRESS as `0x${string}`,
           abi: WAVAX_ABI,
           functionName: 'deposit',
           value: amountInWei,
         });
-        // In a real app, wait for receipt. For now, assume success or next step will fail anyway.
       }
 
-      // 2. Handle Approval if needed (even after wrapping, router needs allowance)
-      if (needsApproval || tokenIn.symbol === 'AVAX') {
-        console.log('Requesting approval...');
-        setError('Step 2/3: Authorizing Router...');
+      // STEP 2: Approve router to spend tokens (needed for all ERC20 including WAVAX)
+      if (needsApproval || sellingNativeAvax) {
+        console.log('Step 2: Approving router to spend tokens...');
+        setError(sellingNativeAvax ? 'Step 2/4: Approving WAVAX...' : 'Step 2/3: Approving tokens...');
         await writeContract({
-          address: tokenIn.address as `0x${string}`,
+          address: WAVAX_ADDRESS as `0x${string}`,
           abi: ERC20_ABI,
           functionName: 'approve',
           args: [DEX_ROUTER_ADDRESS as `0x${string}`, amountInWei],
         });
       }
 
-      // 3. Execute Swap
-      console.log('Executing swap on-chain...');
-      setError('Step 3/3: Executing Swap...');
+      // STEP 3: Execute Swap on DEX
+      const totalSteps = buyingNativeAvax ? 4 : (sellingNativeAvax ? 4 : 3);
+      const currentStep = sellingNativeAvax ? 3 : 2;
+      console.log(`Step ${currentStep}: Executing swap on DEX...`);
+      setError(`Step ${currentStep}/${totalSteps}: Executing Swap...`);
+
+      const partnerFeeBps = BigInt(DEFAULT_PARTNER_FEE_BPS);
+
       const hash = await writeContract({
         address: DEX_ROUTER_ADDRESS as `0x${string}`,
         abi: DEX_ROUTER_ABI,
-        functionName: 'swapBestRoute',
+        functionName: 'swapBestRouteWithPartner',
         args: [
-          tokenIn.address as `0x${string}`,
-          tokenOut.address as `0x${string}`,
+          swapTokenIn as `0x${string}`,
+          swapTokenOut as `0x${string}`,
           amountInWei,
           minAmountOut,
           address as `0x${string}`,
+          partnerId || 'owner',
+          partnerFeeBps,
         ],
       });
 
       console.log('Swap transaction sent:', hash);
+
+      // STEP 4: If buying native AVAX, auto-unwrap WAVAX → AVAX
+      if (buyingNativeAvax) {
+        console.log('Step 4: Auto-unwrapping WAVAX to native AVAX...');
+        setError('Step 4/4: Unwrapping WAVAX to AVAX...');
+        await writeContract({
+          address: WAVAX_ADDRESS as `0x${string}`,
+          abi: WAVAX_ABI,
+          functionName: 'withdraw',
+          args: [BigInt(quote.amountOut)],
+        });
+        console.log('WAVAX unwrapped to native AVAX!');
+      }
+
       setTxHash(hash);
       onSwapSuccess?.({ hash });
 
@@ -314,7 +374,7 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
             className="text-[10px] font-bold uppercase tracking-widest mt-0.5"
             style={{ color: theme === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}
           >
-            0.05% Fee • Aggregated Liquidity
+            0.05% Fee • Top DEX Aggregator
           </p>
         </div>
         <div className="flex items-center gap-2 z-10">

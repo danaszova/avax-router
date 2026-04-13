@@ -5,3 +5,4 @@ export * as adapters from "./adapters";
 export * as interfaces from "./interfaces";
 export * as mocks from "./mocks";
 export { DexRouter__factory } from "./DexRouter__factory";
+export { PartnerRegistry__factory } from "./PartnerRegistry__factory";
