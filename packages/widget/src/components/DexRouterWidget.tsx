@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Token, Quote, WidgetConfig } from '../types';
 import { AVALANCHE_TOKENS, DEFAULT_SLIPPAGE, API_BASE_URL, DEX_ROUTER_ADDRESS, DEFAULT_PARTNER_FEE_BPS, WAVAX_ADDRESS, NATIVE_AVAX_ADDRESS } from '../utils/constants';
-import { useAccount, useWriteContract, useReadContract, useBalance } from 'wagmi';
+import { useAccount, useWriteContract, useReadContract, useBalance, useDisconnect } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { formatUnits } from 'ethers';
 
@@ -115,6 +115,19 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   const [txHash, setTxHash] = useState<string | null>(null);
 
   const { isConnected, address } = useAccount();
+  const { disconnect } = useDisconnect();
+
+  // Handle aggressive disconnect to ensure state is completely cleared
+  const handleDisconnect = () => {
+    disconnect();
+    // Clear localStorage items related to wallet connection
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('wagmi') || key.startsWith('wc@2') || key.includes('walletconnect')) {
+            localStorage.removeItem(key);
+        }
+    });
+    // Force reload to clear any remaining in-memory state if needed, though wagmi usually handles this
+  };
 
   // Contract Write Hooks
   const { writeContractAsync: writeContract, isPending: isSwapPending } = useWriteContract();
@@ -329,9 +342,9 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
   };
 
   const widthClass = {
-    compact: 'w-80',
-    default: 'w-96',
-    wide: 'w-[480px]',
+    compact: 'w-full max-w-[320px] sm:w-80',
+    default: 'w-full max-w-[384px] sm:w-96',
+    wide: 'w-full max-w-[480px]',
   }[width];
 
   const radiusClass = {
@@ -343,7 +356,7 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
 
   return (
     <div
-      className={`${widthClass} ${radiusClass} overflow-hidden font-sans transition-all duration-300`}
+      className={`${widthClass} ${radiusClass} overflow-hidden font-sans transition-all duration-300 mx-auto`}
       style={{
         backgroundColor: theme === 'dark' ? '#0F0F0F' : '#FFFFFF',
         border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
@@ -379,17 +392,31 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
         </div>
         <div className="flex items-center gap-2 z-10">
           {isConnected && address && (
-            <div
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border"
-              style={{
-                backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'
-              }}
-            >
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-              <span className="text-[10px] font-mono font-bold opacity-60">
-                {address.slice(0, 6)}...{address.slice(-4)}
-              </span>
+            <div className="flex items-center gap-1">
+              <div
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl border"
+                style={{
+                  backgroundColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+                  borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'
+                }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span className="text-[10px] font-mono font-bold opacity-60">
+                  {address.slice(0, 6)}...{address.slice(-4)}
+                </span>
+              </div>
+              <button
+                onClick={handleDisconnect}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95 bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20"
+                title="Disconnect Wallet"
+              >
+                <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Logout</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+              </button>
             </div>
           )}
           {!hideSettings && (
@@ -778,14 +805,16 @@ export const DexRouterWidget: React.FC<DexRouterWidgetProps> = ({
 
       {/* Token Selection Modal */}
       {isTokenSelectorOpen && (
-        <div className="absolute inset-0 z-50 p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 sm:absolute sm:inset-0 z-50 p-0 sm:p-4 animate-in fade-in duration-200 flex items-end sm:items-stretch bg-black/40 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none">
           <div
-            className="w-full h-full rounded-3xl flex flex-col overflow-hidden"
+            className="w-full h-[85vh] sm:h-full rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden"
             style={{
               backgroundColor: theme === 'dark' ? '#121213' : '#F9F9F9',
               border: `1px solid ${theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+              boxShadow: '0 -20px 40px rgba(0,0,0,0.5)',
             }}
           >
+            <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mt-3 sm:hidden" />
             <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: theme === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }}>
               <h3 className="text-sm font-black uppercase tracking-widest opacity-60">Select Token</h3>
               <button onClick={() => { setIsTokenSelectorOpen(null); setSearchQuery(''); }} className="opacity-40 hover:opacity-100 transition-opacity">

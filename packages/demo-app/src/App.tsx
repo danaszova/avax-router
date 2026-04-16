@@ -1,6 +1,9 @@
 import { DexRouterWidget, Web3Provider } from '@snowmonster_defi/widget';
+import { useState } from 'react';
 
 const App = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     return (
         <Web3Provider theme="dark">
             <div className="app-root">
@@ -21,8 +24,48 @@ const App = () => {
                                 <li><a href="#sdk-section">SDK</a></li>
                             </ul>
                         </nav>
-                        <a href="#developers" className="btn-secondary" style={{ padding: '0.6rem 1.5rem', fontSize: '0.8rem' }}>Start Building</a>
+                        
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <a href="#developers" className="btn-secondary hidden-mobile" style={{ padding: '0.6rem 1.5rem', fontSize: '0.8rem' }}>Start Building</a>
+                            <button 
+                                className="mobile-menu-btn" 
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', padding: '0.5rem', display: 'none' }}
+                            >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    {isMenuOpen ? (
+                                        <><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></>
+                                    ) : (
+                                        <><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></>
+                                    )}
+                                </svg>
+                            </button>
+                        </div>
                     </div>
+                    
+                    {/* Mobile Menu */}
+                    {isMenuOpen && (
+                        <div className="mobile-menu" style={{
+                            position: 'absolute',
+                            top: '100px',
+                            left: 0,
+                            right: 0,
+                            background: 'rgba(10, 10, 11, 0.95)',
+                            backdropFilter: 'blur(10px)',
+                            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+                            padding: '1rem 2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1.5rem',
+                            zIndex: 99
+                        }}>
+                            <a href="#features" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 600 }}>Features</a>
+                            <a href="#developers" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 600 }}>Developer Tools</a>
+                            <a href="#widget-section" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 600 }}>Widget</a>
+                            <a href="#sdk-section" onClick={() => setIsMenuOpen(false)} style={{ color: 'white', textDecoration: 'none', fontSize: '1.1rem', fontWeight: 600 }}>SDK</a>
+                            <a href="#developers" onClick={() => setIsMenuOpen(false)} className="btn-secondary" style={{ textAlign: 'center', marginTop: '0.5rem' }}>Start Building</a>
+                        </div>
+                    )}
                 </header>
 
                 <main className="landing-container">
